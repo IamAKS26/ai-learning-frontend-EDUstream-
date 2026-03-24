@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenWriter - Focused Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFB300",
+                        "primary-hover": "#FFC107",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0B0F19",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 179, 0, 0.1);
+        }
+        .writing-area {
+            scrollbar-width: none;
+        }
+        .writing-area::-webkit-scrollbar {
+            display: none;
+        }
+        .active-glow {
+            box-shadow: 0 0 30px rgba(255, 179, 0, 0.1);
+            border: 1px solid rgba(255, 179, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<header class="glass fixed top-0 z-50 flex w-full items-center justify-between px-6 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-2xl">edit_note</span>
+<h2 class="text-lg font-bold tracking-tight">ZenWriter</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-slate-400 hover:text-primary transition-colors" href="#">File</a>
+<a class="text-sm font-medium text-slate-400 hover:text-primary transition-colors" href="#">Edit</a>
+<a class="text-sm font-medium text-slate-400 hover:text-primary transition-colors" href="#">View</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-slate-200 dark:bg-primary/10 rounded-full px-1 py-1 border border-primary/20">
+<button class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-background-dark text-xs font-bold tracking-wide">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                    Focus Mode
+                </button>
+<button class="flex items-center gap-2 px-4 py-1.5 rounded-full text-slate-500 text-xs font-bold">
+                    Zen
+                </button>
+</div>
+<button class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/30 border border-primary/50 overflow-hidden" data-alt="User avatar placeholder with abstract amber gradient">
+<img alt="Profile" class="h-full w-full object-cover" data-alt="Profile picture of the user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4vzJ57fkSCZXR6pN9GFvgcwB3wWpiYF4jr_LcFQ6p5OFtTyzNlGACTIiVgTLpsmJJDf4D_DGbbdClqXTIJKDx9VZwJeOu5biSJ5nwuPS2sA4y3aVCZkhrkHyQgqR2zcPbwmqmFXZnrjRydgvNjt_5Z7HWdD67QEkp7LT0_wmc4FORN6kOxi1tOm3YiHEL1xZhuPWLT3NS5Cd1bQu_QJl8ltn2trMVsfzNapmYnysSpJrzyoOBKGh870aWYneQoQTIj47k5U8KpG4"/>
+</div>
+</div>
+</header>
+<div class="flex h-full pt-16">
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-background-dark/50 transition-all duration-300">
+<div class="p-4 flex flex-col h-full">
+<div class="flex items-center justify-between mb-6 px-2">
+<span class="text-xs font-bold uppercase tracking-widest text-slate-400">Library</span>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+</button>
+</div>
+<div class="space-y-1">
+<div class="group flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary cursor-pointer">
+<span class="material-symbols-outlined text-[20px] fill-1">folder_open</span>
+<span class="text-sm font-semibold">Course Notes</span>
+</div>
+<div class="group flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="text-sm font-medium">AI Insights</span>
+</div>
+<div class="group flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="text-sm font-medium">Drafts</span>
+</div>
+</div>
+<div class="mt-8">
+<span class="text-xs font-bold uppercase tracking-widest text-slate-400 px-2">Recent Notes</span>
+<div class="mt-4 space-y-2">
+<div class="px-3 py-2 border-l-2 border-primary text-sm font-medium dark:text-slate-200">The Future of AI Writing</div>
+<div class="px-3 py-2 border-l-2 border-transparent text-sm font-medium text-slate-500 hover:text-slate-300 cursor-pointer">UI Design Principles</div>
+<div class="px-3 py-2 border-l-2 border-transparent text-sm font-medium text-slate-500 hover:text-slate-300 cursor-pointer">Morning Reflections</div>
+</div>
+</div>
+<div class="mt-auto pt-4">
+<button class="w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all hover:text-primary">
+<span class="material-symbols-outlined text-sm">dock_to_left</span>
+                        Collapse Sidebar
+                    </button>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto writing-area bg-background-light dark:bg-background-dark p-8 md:p-12">
+<div class="max-w-2xl mx-auto">
+<div class="active-glow rounded-xl p-8 md:p-12 min-h-[819px] bg-white dark:bg-slate-900/20 backdrop-blur-sm border border-slate-200 dark:border-slate-800/50">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-2 text-primary/60 mb-2">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span class="text-xs font-medium uppercase tracking-tighter">October 24, 2023</span>
+<span class="mx-2 text-slate-600">•</span>
+<span class="text-xs font-medium uppercase tracking-tighter">842 Words</span>
+</div>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                            The Future of Intelligent Writing
+                        </h1>
+<div class="space-y-6 text-lg leading-relaxed text-slate-600 dark:text-slate-300 font-light">
+<p>
+                                In a world where artificial intelligence is becoming ubiquitous, the act of writing is undergoing a profound transformation. It's no longer just about putting words on a page; it's about the synthesis of human creativity and machine intelligence.
+                            </p>
+<p>
+                                As we navigate this new landscape, the tools we use must adapt. They need to fade into the background, providing a canvas that is both powerful and invisible. This is where the concept of 'Focus Mode' becomes essential. By removing the clutter of traditional interfaces, we allow our thoughts to flow without interruption.
+                            </p>
+<p>
+                                Consider the impact on the creative process. When the barrier between thought and text is minimized, we enter a state of flow that is both productive and meditative. ZenWriter aims to be that bridge, facilitating a deeper connection with your work...
+                            </p>
+<div class="relative py-4 group">
+<div class="absolute -left-4 top-0 bottom-0 w-1 bg-primary/40 rounded-full scale-y-0 group-hover:scale-y-100 transition-transform"></div>
+<p class="italic text-primary/80">
+                                    "Simplicity is the ultimate sophistication. It's not just about what you add, but what you have the courage to take away."
+                                </p>
+</div>
+<p class="animate-pulse border-r-2 border-primary h-6 w-1 inline-block align-middle"></p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<button class="fixed bottom-8 right-8 flex items-center gap-3 px-6 py-4 rounded-full bg-primary text-background-dark font-bold shadow-[0_0_25px_rgba(255,179,0,0.4)] hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl">auto_awesome</span>
+<span>Ask AI</span>
+</button>
+<div class="fixed bottom-0 left-0 w-full glass h-10 flex items-center justify-between px-6 border-t border-slate-200 dark:border-slate-800 text-[10px] uppercase tracking-widest font-bold text-slate-500">
+<div class="flex gap-4">
+<span class="text-primary/70">Syncing...</span>
+<span class="text-primary">● Cloud Active</span>
+</div>
+<div class="flex gap-4">
+<span class="hover:text-primary cursor-pointer transition-colors">Markdown</span>
+<span class="hover:text-primary cursor-pointer transition-colors">Export</span>
+</div>
+</div>
+</div>
+</body></html>

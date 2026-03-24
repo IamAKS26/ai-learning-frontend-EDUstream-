@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Learning Platform - Cyber Amber Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFB300",
+                        "secondary": "#FFD700",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0B0F19",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 179, 0, 0.12) 0%, transparent 60%);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 20px rgba(255, 179, 0, 0.2);
+            border-color: rgba(255, 179, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 selection:bg-primary selection:text-black">
+<!-- Sticky Navbar -->
+<nav class="fixed top-0 w-full z-50 px-6 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between glass rounded-2xl px-6 py-3">
+<div class="flex items-center gap-2">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-black text-2xl font-bold">neurology</span>
+</div>
+<span class="text-xl font-bold tracking-tight">Lumina<span class="text-primary">AI</span></span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Courses</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Progress</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Analytics</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-secondary text-black px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/20">
+                Get Started
+            </button>
+</div>
+</div>
+</nav>
+<main class="relative pt-32 overflow-hidden">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[819px]">
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-6">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                THE FUTURE OF EDUCATION
+            </div>
+<h1 class="text-5xl md:text-7xl font-black leading-[1.1] mb-6">
+                Learn Smarter <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary">With AI Intelligence</span>
+</h1>
+<p class="text-slate-400 text-lg md:text-xl leading-relaxed max-w-lg mb-10">
+                Experience a personalized learning journey powered by advanced neural networks. Tailored content, real-time feedback, and adaptive pacing for every student.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary hover:bg-secondary text-black px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 group shadow-xl shadow-primary/10">
+                    Start Learning Now
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="glass hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
+                    View Demo
+                </button>
+</div>
+</div>
+<div class="relative">
+<!-- Abstract 3D Dashboard Mockup -->
+<div class="relative w-full aspect-square glass rounded-3xl overflow-hidden border-white/5 shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
+<div class="p-8 space-y-6">
+<div class="h-8 w-1/3 bg-white/5 rounded-lg"></div>
+<div class="grid grid-cols-3 gap-4">
+<div class="h-24 bg-primary/20 rounded-2xl border border-primary/30 flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+<div class="h-2 w-12 bg-white/10 rounded"></div>
+</div>
+<div class="h-24 glass rounded-2xl flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary/60">skillet</span>
+<div class="h-2 w-12 bg-white/10 rounded"></div>
+</div>
+<div class="h-24 glass rounded-2xl flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-secondary">person</span>
+<div class="h-2 w-12 bg-white/10 rounded"></div>
+</div>
+</div>
+<div class="h-48 glass rounded-2xl relative overflow-hidden p-4">
+<svg class="w-full h-full text-primary" fill="none" viewbox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 80C50 80 100 20 150 20C200 20 250 90 300 90C350 90 400 40 450 40" stroke="currentColor" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Floating Elements -->
+<div class="absolute -top-8 -right-8 glass p-4 rounded-2xl shadow-xl animate-bounce" style="animation-duration: 4s;">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<div>
+<div class="text-xs text-slate-400 uppercase font-bold">Progress</div>
+<div class="text-sm font-bold">85% Completed</div>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-4 -left-12 glass p-4 rounded-2xl shadow-xl animate-pulse">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">psychology</span>
+</div>
+<div>
+<div class="text-xs text-slate-400 uppercase font-bold">AI Status</div>
+<div class="text-sm font-bold">Adapting Curriculum...</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute top-0 right-0 -z-10 w-full h-full hero-gradient pointer-events-none"></div>
+</section>
+<!-- Features Grid -->
+<section class="max-w-7xl mx-auto px-6 py-32">
+<div class="text-center mb-20">
+<h2 class="text-4xl md:text-5xl font-black mb-4">Intelligent Features</h2>
+<p class="text-slate-400 max-w-2xl mx-auto">Our platform uses cutting-edge AI to redefine how you gain new skills with personalized tools for every stage.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="group glass p-8 rounded-3xl glow-hover transition-all cursor-default">
+<div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">magic_button</span>
+</div>
+<h3 class="text-xl font-bold mb-3">AI Lesson Generator</h3>
+<p class="text-slate-400 text-sm leading-relaxed">Generate custom lessons on any topic instantly based on your current knowledge gaps.</p>
+</div>
+<!-- Card 2 -->
+<div class="group glass p-8 rounded-3xl glow-hover transition-all cursor-default">
+<div class="size-14 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl">quiz</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Smart Quizzes</h3>
+<p class="text-slate-400 text-sm leading-relaxed">Dynamic assessments that adapt difficulty in real-time to challenge your understanding.</p>
+</div>
+<!-- Card 3 -->
+<div class="group glass p-8 rounded-3xl glow-hover transition-all cursor-default">
+<div class="size-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">insights</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Progress Tracking</h3>
+<p class="text-slate-400 text-sm leading-relaxed">Deep visual insights into your learning habits, milestones, and cognitive retention levels.</p>
+</div>
+<!-- Card 4 -->
+<div class="group glass p-8 rounded-3xl glow-hover transition-all cursor-default">
+<div class="size-14 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl">memory</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Adaptive Engine</h3>
+<p class="text-slate-400 text-sm leading-relaxed">A core engine that evolves as you learn, constantly refining your unique learning path.</p>
+</div>
+</div>
+</section>
+<!-- AI Personalization Section -->
+<section class="max-w-7xl mx-auto px-6 py-20">
+<div class="glass rounded-[3rem] p-12 overflow-hidden relative border-primary/10">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-3xl rounded-full"></div>
+<div class="flex flex-col lg:flex-row items-center gap-16 relative z-10">
+<div class="lg:w-1/2">
+<h2 class="text-4xl font-black mb-6">Real-time Adaptive Personalization</h2>
+<p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                        Watch your curriculum evolve as the AI visualizes your strengths and weaknesses in real-time. Our system analyzes over 50 data points per minute to ensure you're always in the 'Flow State'.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Dynamic topic sequencing</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Automated difficulty balancing</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Spaced repetition scheduling</span>
+</li>
+</ul>
+</div>
+<div class="lg:w-1/2 w-full">
+<div class="aspect-video glass rounded-2xl p-2 border-white/10 shadow-inner relative group">
+<div class="w-full h-full bg-background-dark/50 rounded-xl flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-50"></div>
+<!-- Abstract AI Visualization -->
+<div class="flex items-end gap-1 px-10 h-32">
+<div class="w-6 bg-primary/30 rounded-t-lg h-1/2"></div>
+<div class="w-6 bg-primary/50 rounded-t-lg h-3/4"></div>
+<div class="w-6 bg-primary/30 rounded-t-lg h-1/3"></div>
+<div class="w-6 bg-primary/80 rounded-t-lg h-full"></div>
+<div class="w-6 bg-primary/50 rounded-t-lg h-2/3"></div>
+<div class="w-6 bg-primary/20 rounded-t-lg h-1/4"></div>
+</div>
+<span class="material-symbols-outlined text-6xl text-primary animate-pulse absolute">radar</span>
+</div>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/0 transition-colors">
+<span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+</div>
+</div>
+<p class="text-center mt-4 text-xs text-slate-500 font-bold uppercase tracking-widest">Live Personalization Feed</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Tiers -->
+<section class="max-w-7xl mx-auto px-6 py-32">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-black mb-4">Choose Your Learning Path</h2>
+<p class="text-slate-400">Unlock the full potential of AI-driven education.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Free -->
+<div class="glass p-10 rounded-3xl flex flex-col hover:-translate-y-2 transition-transform duration-300">
+<div class="mb-8">
+<h3 class="text-xl font-bold mb-2">Free</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">$0</span>
+<span class="text-slate-400">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> 5 AI-Generated Lessons</li>
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> Basic Progress Tracking</li>
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> Community Access</li>
+</ul>
+<button class="w-full glass py-3 rounded-xl font-bold hover:bg-white/5 transition-colors">Get Started</button>
+</div>
+<!-- Pro -->
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-[2.1rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+<div class="relative glass bg-background-dark/95 p-10 rounded-[2rem] flex flex-col border-primary/30 hover:-translate-y-2 transition-transform duration-300 h-full">
+<div class="absolute top-0 right-10 -translate-y-1/2 bg-primary px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-black uppercase">Most Popular</div>
+<div class="mb-8">
+<h3 class="text-xl font-bold mb-2">Pro</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">$29</span>
+<span class="text-slate-400">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm font-bold">check</span> Unlimited AI Lessons</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm font-bold">check</span> Adaptive Quizzing</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm font-bold">check</span> Advanced Analytics</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm font-bold">check</span> Priority Support</li>
+</ul>
+<button class="w-full bg-primary py-3 rounded-xl font-bold text-black shadow-lg shadow-primary/30 hover:bg-secondary transition-all">Start 14-Day Trial</button>
+</div>
+</div>
+<!-- Premium -->
+<div class="glass p-10 rounded-3xl flex flex-col hover:-translate-y-2 transition-transform duration-300">
+<div class="mb-8">
+<h3 class="text-xl font-bold mb-2">Premium</h3>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">$99</span>
+<span class="text-slate-400">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> Team Analytics</li>
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> Custom API Integration</li>
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> White-label Lessons</li>
+<li class="flex items-center gap-3 text-sm text-slate-300"><span class="material-symbols-outlined text-slate-500 text-sm">check</span> Dedicated Success Manager</li>
+</ul>
+<button class="w-full glass py-3 rounded-xl font-bold hover:bg-white/5 transition-colors">Contact Sales</button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="border-t border-white/5 bg-background-dark/80 backdrop-blur-xl py-20">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-black text-xl font-bold">neurology</span>
+</div>
+<span class="text-lg font-bold tracking-tight">LuminaAI</span>
+</div>
+<p class="text-slate-500 text-sm leading-relaxed mb-8">
+                    Pioneering the future of personalized education with state-of-the-art artificial intelligence.
+                </p>
+<div class="flex gap-4">
+<a class="size-10 glass rounded-full flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-xl">share</span>
+</a>
+<a class="size-10 glass rounded-full flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-xl">public</span>
+</a>
+<a class="size-10 glass rounded-full flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-xl">language</span>
+</a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold">Platform</h4>
+<ul class="space-y-2 text-slate-500 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Courses Catalog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">AI Lesson Builder</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Student Success</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Pricing Plans</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold">Company</h4>
+<ul class="space-y-2 text-slate-500 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Press Kit</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold">Resources</h4>
+<ul class="space-y-2 text-slate-500 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Documentation</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">API Reference</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Legal</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="text-slate-500 text-xs">© 2024 LuminaAI Platform Inc. All rights reserved.</p>
+<div class="flex gap-8 text-xs text-slate-500">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

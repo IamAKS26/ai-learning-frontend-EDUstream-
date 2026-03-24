@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus AI - Professional Learning Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFB300",
+                        "accent": "#FFD700",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0914",
+                        "surface-dark": "#141221",
+                        "glass": "rgba(255, 255, 255, 0.03)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, rgba(255, 179, 0, 0.15) 0%, rgba(255, 179, 0, 0) 100%);
+            border-left: 3px solid #FFB300;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0914;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="w-64 flex-shrink-0 flex flex-col border-r border-slate-200 dark:border-white/5 bg-background-light dark:bg-surface-dark transition-all duration-300">
+<div class="p-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(255,179,0,0.4)]">
+<span class="material-symbols-outlined text-white text-xl">school</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Nexus AI</h1>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<div class="sidebar-item-active flex items-center gap-3 px-4 py-3 cursor-pointer group">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined">book_4</span>
+<span class="text-sm font-medium">Courses</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Progress</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-sm font-medium">Analytics</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</div>
+</nav>
+<div class="p-4 m-4 rounded-xl bg-primary/10 border border-primary/20">
+<p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Pro Access</p>
+<p class="text-xs text-slate-400 mb-3">Unlock advanced AI tutoring and path optimization.</p>
+<button class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_4px_12px_rgba(255,179,0,0.2)]">Upgrade Plan</button>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-white/5 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-800 border border-white/10 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="User profile avatar circular" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBAkoBxISVlGivbj_W_7geg0MVotCwW4q2u1ZZXVZVJEe36JHHPUeEZ_HwaNPqhztniLulgHnT7Q_cbi7qjm9xS7FrBWciJkWlCsqVPOZvZ5c8QWjfnCdgJg0TKFKMtmUWbBfVub8_2D23ePKUhmXSz-rVb86Fj53RzoL7ZAbDeBk06BH0yUw-0voc-Lb2W2EwEYvJq4AI2uB0f0X04qxe1EMhQ-a4L3P7eKGBQEyacFg9SZtXi0ZYoupPcMGPQVfb4Eurzbz6gtE')"></div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Alex Chen</p>
+<p class="text-xs text-slate-500 truncate">Beta Explorer</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm cursor-pointer">more_vert</span>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark overflow-y-auto">
+<header class="h-16 flex items-center justify-between px-8 border-b border-slate-200 dark:border-white/5 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-30">
+<div class="flex items-center w-full max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary/50 transition-all" placeholder="Search lessons, topics, or AI shortcuts..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-background-dark"></span>
+</button>
+<button class="p-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-6 w-[1px] bg-slate-200 dark:bg-white/10 mx-2"></div>
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
+<span class="material-symbols-outlined text-sm">bolt</span>
+                    AI Quick Chat
+                </button>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<section>
+<div class="flex items-end justify-between mb-6">
+<div>
+<h2 class="text-3xl font-bold tracking-tight">Welcome back, Scholar.</h2>
+<p class="text-slate-500 mt-1">AI has personalized 3 new focus areas based on your recent activity.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-wider">Level 12</span>
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider">85% Completion</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">schedule</span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Learning Time</p>
+<h3 class="text-2xl font-bold mt-1">42.5 hrs</h3>
+<div class="flex items-center gap-1 mt-4 text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                            +12.4% vs last week
+                        </div>
+</div>
+<div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent">emoji_events</span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Knowledge Score</p>
+<h3 class="text-2xl font-bold mt-1">1,284</h3>
+<div class="flex items-center gap-1 mt-4 text-accent text-xs font-bold">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                            Top 5% of learners
+                        </div>
+</div>
+<div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">target</span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Course Progress</p>
+<h3 class="text-2xl font-bold mt-1">84%</h3>
+<div class="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary h-full w-[84%] rounded-full shadow-[0_0_8px_#FFB300]"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent">psychology</span>
+</div>
+<p class="text-slate-400 text-sm font-medium">AI Insights</p>
+<h3 class="text-2xl font-bold mt-1">12 Ready</h3>
+<div class="flex items-center gap-1 mt-4 text-slate-400 text-xs font-bold">
+<span class="material-symbols-outlined text-xs">history</span>
+                            3 reviewed today
+                        </div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-8">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Weekly Activity</h3>
+<select class="bg-white/5 border-none rounded-lg text-xs font-medium focus:ring-0">
+<option>Last 7 Days</option>
+<option>Last 30 Days</option>
+</select>
+</div>
+<div class="glass-card p-6 rounded-2xl h-64 flex flex-col">
+<div class="flex-1 flex items-end justify-between gap-3">
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 40%"></div>
+<span class="text-[10px] text-slate-500">Mon</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 65%"></div>
+<span class="text-[10px] text-slate-500">Tue</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/60 rounded-t-lg transition-all hover:bg-primary/80 shadow-[0_-4px_10px_rgba(255,179,0,0.2)]" style="height: 90%"></div>
+<span class="text-[10px] text-slate-500 font-bold text-primary">Wed</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 45%"></div>
+<span class="text-[10px] text-slate-500">Thu</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 30%"></div>
+<span class="text-[10px] text-slate-500">Fri</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 20%"></div>
+<span class="text-[10px] text-slate-500">Sat</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-full bg-primary/20 rounded-t-lg transition-all hover:bg-primary/40" style="height: 55%"></div>
+<span class="text-[10px] text-slate-500">Sun</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold">Current Lessons</h3>
+<button class="text-sm font-medium text-primary hover:underline">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="h-32 bg-slate-800 relative">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Cybersecurity code visualization with amber glow" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBtQMRFBKB9IufwOaCOL9Om2IqkxgMvNO7G1FFx1h8pqpgo-3ppWm4OTamLJI3xGvGR4kh8F4b8Wpfo8QxjJcxXPSeDkZEnXtm6o9i9tCQ_TAO7UgvbF3k4nhOHQQDu4vJjVY77sTUwQHjXvDHf5xo1sd-4QVcqG5Qku2oZ2u_DneMZRl64_UvO9da1-NMQEg3VMgqyb8Pe3PryJCs7_lrK1vUiI7rg7XlJxaGtSYJYDMGe266AjjjM5ftXzQTJw9MN6qAoW7pV4j0')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<span class="px-2 py-0.5 bg-primary rounded text-[10px] font-bold text-white uppercase tracking-wider">Advanced</span>
+</div>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-sm mb-1">Cybersecurity: Modern AI Threats</h4>
+<p class="text-xs text-slate-500 mb-4 line-clamp-1">Understanding LLM vulnerability patterns and defense...</p>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<div class="w-24 bg-white/5 h-1 rounded-full">
+<div class="bg-primary h-full w-[65%] rounded-full shadow-[0_0_5px_#FFB300]"></div>
+</div>
+<span class="text-slate-400">65%</span>
+</div>
+<button class="text-primary font-bold">Resume</button>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="h-32 bg-slate-800 relative">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Neural network visualization with amber data points" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHF1t4kYOwobuBQHfn2PUbAGRISu6IxCje22XpKpSTJy8WOl7zOtyYsWv4YTYvXOjm2UC7zDhiqUKvA_JWGH6vQkH9AUNyYsSU3JgPimQQPEzdY32ystDH9RdKADpJpKXwRyz_eUR0cabsZIuHLhnV61GEEzWDmpUoB4WadO-te8QrEY_lecjqyFUbU5_scwYnOKwYqoS12DtoNZrKPsCajomF7Hy-WHbN0mcbqrMF2D0fubwboOjbDS4Unx3XIPWe2N8ej5mPoV4')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<span class="px-2 py-0.5 bg-accent rounded text-[10px] font-bold text-white uppercase tracking-wider">Intermediate</span>
+</div>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-sm mb-1">Neural Architectures 101</h4>
+<p class="text-xs text-slate-500 mb-4 line-clamp-1">A deep dive into Transformer blocks and attention...</p>
+<div class="flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<div class="w-24 bg-white/5 h-1 rounded-full">
+<div class="bg-accent h-full w-[20%] rounded-full shadow-[0_0_5px_#FFD700]"></div>
+</div>
+<span class="text-slate-400">20%</span>
+</div>
+<button class="text-primary font-bold">Resume</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<div>
+<h3 class="text-lg font-bold mb-4">AI Recommended</h3>
+<div class="space-y-4">
+<div class="p-4 glass-card rounded-2xl flex items-center gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-accent">auto_awesome</span>
+</div>
+<div class="min-w-0">
+<h4 class="text-sm font-bold truncate">Path: Quantum ML</h4>
+<p class="text-xs text-slate-500">Based on your math score (98%)</p>
+</div>
+</div>
+<div class="p-4 glass-card rounded-2xl flex items-center gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">data_object</span>
+</div>
+<div class="min-w-0">
+<h4 class="text-sm font-bold truncate">Rust for AI Engine</h4>
+<p class="text-xs text-slate-500">Systems programming essential</p>
+</div>
+</div>
+<div class="p-4 glass-card rounded-2xl flex items-center gap-4 hover:border-primary/40 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">model_training</span>
+</div>
+<div class="min-w-0">
+<h4 class="text-sm font-bold truncate">Hyperparameter Tuning</h4>
+<p class="text-xs text-slate-500">Workshop starts in 2 hours</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">AI Alerts</h3>
+<div class="glass-card rounded-2xl divide-y divide-white/5 overflow-hidden">
+<div class="p-4 bg-primary/5">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">info</span>
+<div class="text-xs">
+<p class="font-bold text-slate-200">Refresher Suggested</p>
+<p class="text-slate-500 mt-1">You haven't reviewed "Calculus for ML" in 3 days. Spaced repetition due.</p>
+<button class="mt-2 text-primary font-bold">Start Review</button>
+</div>
+</div>
+</div>
+<div class="p-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-accent text-sm mt-0.5">grade</span>
+<div class="text-xs">
+<p class="font-bold text-slate-200">Achievement Unlocked</p>
+<p class="text-slate-500 mt-1">"Night Owl": 5 consecutive days of learning after 10 PM.</p>
+</div>
+</div>
+</div>
+<div class="p-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-slate-500 text-sm mt-0.5">schedule</span>
+<div class="text-xs">
+<p class="font-bold text-slate-200">Weekly Summary Ready</p>
+<p class="text-slate-500 mt-1">Your detailed cognitive growth report is ready to view.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
