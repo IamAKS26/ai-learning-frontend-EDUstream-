@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { NotesPanel } from "./NotesPanel";
 
 interface Question {
   question: string;
@@ -10,10 +11,11 @@ interface Question {
 
 interface Props {
   unit: any;
+  moduleId: string;
   onComplete: (payload: { timeSpent: number; quizScore: number }) => void;
 }
 
-export function QuizViewer({ unit, onComplete }: Props) {
+export function QuizViewer({ unit, moduleId, onComplete }: Props) {
   const [timeSpent, setTimeSpent] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -47,7 +49,6 @@ export function QuizViewer({ unit, onComplete }: Props) {
     setSelectedAnswers(prev => ({ ...prev, [qIdx]: option }));
   };
 
-  // Returns score as 0–1 (as the backend expects)
   const calculateScore = (): number => {
     let correct = 0;
     questions.forEach((q, idx) => {
@@ -57,12 +58,8 @@ export function QuizViewer({ unit, onComplete }: Props) {
   };
 
   const scorePercent = Math.round(calculateScore() * 100);
-
   const handleSubmit = () => setSubmitted(true);
-
-  const handleContinue = () => {
-    onComplete({ timeSpent, quizScore: calculateScore() }); // 0–1 range
-  };
+  const handleContinue = () => onComplete({ timeSpent, quizScore: calculateScore() });
 
   return (
     <div className="glass-card rounded-2xl p-8 max-w-3xl mx-auto">
@@ -79,7 +76,7 @@ export function QuizViewer({ unit, onComplete }: Props) {
         </div>
       </div>
 
-      {/* Questions — use array index as key (AI doesn't guarantee q.id) */}
+      {/* Questions */}
       <div className="space-y-8">
         {questions.map((q, idx) => (
           <div key={idx} className="p-6 bg-white/5 rounded-xl border border-white/5">
@@ -149,6 +146,8 @@ export function QuizViewer({ unit, onComplete }: Props) {
           </div>
         )}
       </div>
+
+      <NotesPanel moduleId={moduleId} unitId={unit._id} />
     </div>
   );
 }

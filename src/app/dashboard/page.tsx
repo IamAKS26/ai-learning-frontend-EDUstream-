@@ -21,9 +21,11 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingCourse, setDeletingCourse] = useState<Course | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    apiClient.get("/courses")
+    apiClient.get("/courses?t=" + Date.now())
       .then(res => setCourses(res.data))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -31,6 +33,20 @@ export default function DashboardPage() {
 
   const myCourses = courses.slice(0, 2); // show first 2 as "suggested"
   const totalUnits = courses.reduce((a, c) => a + (c.lessonsCount ?? 0), 0);
+
+  const handleDeleteCourse = async () => {
+    if (!deletingCourse) return;
+    setIsDeleting(true);
+    try {
+      await apiClient.delete(`/courses/${deletingCourse._id}`);
+      setCourses(prev => prev.filter(c => c._id !== deletingCourse._id));
+      setDeletingCourse(null);
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Failed to delete course.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -108,6 +124,15 @@ export default function DashboardPage() {
                         AI Generated
                       </span>
                     )}
+                    <div className="absolute top-2 right-2">
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeletingCourse(course); }}
+                        className="p-1.5 bg-red-500/20 hover:bg-red-500/80 text-red-500 hover:text-white rounded-lg transition-colors backdrop-blur-md"
+                        title="Delete Course"
+                      >
+                        <span className="material-symbols-outlined text-[14px] block">delete</span>
+                      </button>
+                    </div>
                   </div>
                   <div className="p-4 flex-1 flex flex-col">
                     <h4 className="font-bold text-sm mb-1 line-clamp-1">{course.title}</h4>
@@ -144,6 +169,37 @@ export default function DashboardPage() {
           )}
         </section>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deletingCourse && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background-dark/80 backdrop-blur-sm">
+          <div className="glass-card w-full max-w-sm p-6 rounded-2xl border border-red-500/20 shadow-2xl animate-in slide-in-from-bottom-4 fade-in">
+            <div className="flex items-center gap-3 mb-4 text-red-400">
+              <span className="material-symbols-outlined text-3xl">warning</span>
+              <h3 className="text-xl font-bold">Delete Course?</h3>
+            </div>
+            <p className="text-slate-400 text-sm mb-6">
+              Are you sure you want to delete <span className="text-white font-semibold">"{deletingCourse.title}"</span>? This will permanently remove all associated modules, lessons, and quizzes. This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeletingCourse(null)}
+                disabled={isDeleting}
+                className="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteCourse}
+                disabled={isDeleting}
+                className="px-4 py-2 bg-red-500/20 hover:bg-red-500/40 text-red-400 font-bold rounded-xl transition-colors text-sm disabled:opacity-50 flex items-center gap-2"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }

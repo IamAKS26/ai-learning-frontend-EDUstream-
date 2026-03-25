@@ -292,9 +292,10 @@ export default function ModulePage() {
                           <p className="px-5 py-4 text-sm text-slate-500 italic">No units in this module yet.</p>
                         ) : (
                           mod.units.map((unit, unitIndex) => (
-                            <div
+                            <Link
+                              href={`/unit/${unit._id}`}
                               key={unit._id}
-                              className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/3 transition-colors group"
+                              className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/3 transition-colors group cursor-pointer"
                             >
                               <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center flex-shrink-0">
                                 <span className="material-symbols-outlined text-slate-400 text-base">
@@ -302,7 +303,7 @@ export default function ModulePage() {
                                 </span>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-slate-200 truncate">
+                                <p className="text-sm font-medium text-slate-200 truncate group-hover:text-primary transition-colors">
                                   {unit.title || `Unit ${unitIndex + 1}`}
                                 </p>
                                 <p className="text-xs text-slate-500">{typeLabel[unit.type] ?? unit.type}</p>
@@ -310,7 +311,10 @@ export default function ModulePage() {
                               {unit.duration && unit.duration !== "00:00" && (
                                 <span className="text-xs text-slate-500 flex-shrink-0">{unit.duration}</span>
                               )}
-                            </div>
+                              <span className="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors text-sm opacity-0 group-hover:opacity-100">
+                                arrow_forward_ios
+                              </span>
+                            </Link>
                           ))
                         )}
                       </div>
