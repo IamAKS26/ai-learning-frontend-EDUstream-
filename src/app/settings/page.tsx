@@ -32,11 +32,11 @@ export default function SettingsPage() {
           </h3>
           
           <div className="flex items-center gap-6 mb-8">
-            <div className="w-20 h-20 rounded-full bg-slate-800 border-2 border-primary/30 flex items-center justify-center text-2xl font-bold text-primary">
+            <div className="w-20 h-20 rounded-full bg-slate-100 border-2 border-primary/30 flex items-center justify-center text-2xl font-bold text-primary">
               {user?.name ? user.name.substring(0, 2).toUpperCase() : "US"}
             </div>
             <div>
-              <button className="px-4 py-2 bg-white/10 hover:bg-white/15 text-sm font-medium rounded-lg transition-colors border border-white/5">
+              <button className="px-4 py-2 bg-slate-100 hover:bg-white/15 text-sm font-medium rounded-lg transition-colors border border-black/5">
                 Change Avatar
               </button>
             </div>
@@ -45,24 +45,24 @@ export default function SettingsPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Full Name</label>
                 <input 
                   type="text" 
                   defaultValue={user?.name || "Student User"} 
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 outline-none"
+                  className="w-full bg-slate-900 border border-black/5 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Email Address</label>
                 <input 
                   type="email" 
                   defaultValue={user?.email || "student@nexus.ai"} 
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 outline-none"
+                  className="w-full bg-slate-900 border border-black/5 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 outline-none"
                 />
               </div>
             </div>
             
-            <button className="mt-4 px-6 py-2.5 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-all text-sm">
+            <button className="mt-4 px-6 py-2.5 bg-primary text-slate-900 font-bold rounded-xl hover:bg-primary/90 transition-all text-sm">
               Save Changes
             </button>
           </div>
@@ -113,7 +113,7 @@ export default function SettingsPage() {
           <h3 className="text-xl font-bold mb-2 text-red-500 flex items-center gap-2">
             <span className="material-symbols-outlined">warning</span> Danger Zone
           </h3>
-          <p className="text-sm text-slate-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+          <p className="text-sm text-slate-500 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
           <button className="px-4 py-2 bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/50 font-bold rounded-xl transition-all text-sm">
             Delete Account
           </button>

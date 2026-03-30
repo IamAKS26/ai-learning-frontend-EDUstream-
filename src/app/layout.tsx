@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: "Personalized AI learning platform that adapts to your pace and skill level.",
 };
 
+import { GlobalNotesWrapper } from "@/components/GlobalNotesWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +30,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-background-dark text-slate-100 antialiased">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <GlobalNotesWrapper />
+        </AuthProvider>
       </body>
     </html>
   );

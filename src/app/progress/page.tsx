@@ -45,7 +45,7 @@ export default function ProgressPage() {
               </div>
               <div>
                 <h4 className="font-bold text-xl mb-2">You are on a 12-day streak!</h4>
-                <p className="text-slate-400 text-sm leading-relaxed">
+                <p className="text-slate-500 text-sm leading-relaxed">
                   Consistent learning yields the best results. You've completed 4 modules this month and are currently active in 2 others.
                 </p>
               </div>
@@ -71,13 +71,13 @@ export default function ProgressPage() {
           <h3 className="text-xl font-bold mb-4">Active Modules</h3>
           <div className="space-y-4">
             <div className="glass-card p-5 rounded-xl flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-slate-800 flex flex-shrink-0 items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-slate-100 flex flex-shrink-0 items-center justify-center">
                 <span className="material-symbols-outlined text-primary">psychology</span>
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-bold truncate">Introduction to AI Mechanics</h4>
                 <div className="flex items-center gap-3 mt-2">
-                  <div className="flex-1 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="flex-1 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                     <div className="bg-primary h-full w-[45%] rounded-full shadow-[0_0_8px_#FFB300]"></div>
                   </div>
                   <span className="text-xs font-bold text-primary w-8 text-right">45%</span>
@@ -86,13 +86,13 @@ export default function ProgressPage() {
             </div>
 
             <div className="glass-card p-5 rounded-xl flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-slate-800 flex flex-shrink-0 items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-slate-100 flex flex-shrink-0 items-center justify-center">
                 <span className="material-symbols-outlined text-accent">security</span>
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-bold truncate">Cybersecurity Fundamentals</h4>
                 <div className="flex items-center gap-3 mt-2">
-                  <div className="flex-1 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="flex-1 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                     <div className="bg-accent h-full w-[12%] rounded-full shadow-[0_0_8px_#FFD700]"></div>
                   </div>
                   <span className="text-xs font-bold text-accent w-8 text-right">12%</span>

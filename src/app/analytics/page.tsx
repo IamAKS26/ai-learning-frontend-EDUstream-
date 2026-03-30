@@ -23,22 +23,22 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="glass-card p-6 rounded-2xl flex flex-col">
             <span className="material-symbols-outlined text-3xl text-primary mb-3">timer</span>
-            <p className="text-slate-400 text-sm font-medium">Total Focus Time</p>
+            <p className="text-slate-500 text-sm font-medium">Total Focus Time</p>
             <h3 className="text-3xl font-bold mt-1">42.5<span className="text-lg text-slate-500 ml-1">hrs</span></h3>
           </div>
           <div className="glass-card p-6 rounded-2xl flex flex-col">
             <span className="material-symbols-outlined text-3xl text-accent mb-3">quiz</span>
-            <p className="text-slate-400 text-sm font-medium">Avg. Quiz Score</p>
+            <p className="text-slate-500 text-sm font-medium">Avg. Quiz Score</p>
             <h3 className="text-3xl font-bold mt-1">88<span className="text-lg text-slate-500 ml-1">%</span></h3>
           </div>
           <div className="glass-card p-6 rounded-2xl flex flex-col">
             <span className="material-symbols-outlined text-3xl text-blue-400 mb-3">local_fire_department</span>
-            <p className="text-slate-400 text-sm font-medium">Longest Streak</p>
+            <p className="text-slate-500 text-sm font-medium">Longest Streak</p>
             <h3 className="text-3xl font-bold mt-1">15<span className="text-lg text-slate-500 ml-1">days</span></h3>
           </div>
           <div className="glass-card p-6 rounded-2xl flex flex-col">
             <span className="material-symbols-outlined text-3xl text-emerald-400 mb-3">check_circle</span>
-            <p className="text-slate-400 text-sm font-medium">Tasks Completed</p>
+            <p className="text-slate-500 text-sm font-medium">Tasks Completed</p>
             <h3 className="text-3xl font-bold mt-1">124</h3>
           </div>
         </div>
@@ -51,9 +51,9 @@ export default function AnalyticsPage() {
                 <div key={skill.name}>
                   <div className="flex justify-between text-sm mb-1.5">
                     <span className="font-medium">{skill.name}</span>
-                    <span className="text-slate-400">{skill.score}/100</span>
+                    <span className="text-slate-500">{skill.score}/100</span>
                   </div>
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <div 
                       className={`h-full ${skill.color} rounded-full ${skill.shadow}`} 
                       style={{ width: `${skill.score}%` }}
@@ -67,7 +67,7 @@ export default function AnalyticsPage() {
           <div className="glass-card p-8 rounded-2xl">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold">Focus Time (Past Week)</h3>
-              <select className="bg-slate-800 border-none rounded text-xs px-2 py-1 outline-none text-slate-300 pointer-events-none">
+              <select className="bg-slate-100 border-none rounded text-xs px-2 py-1 outline-none text-slate-700 pointer-events-none">
                 <option>This Week</option>
               </select>
             </div>

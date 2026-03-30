@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { NotesPanel } from "./NotesPanel";
 
 interface Question {
   question: string;
@@ -64,10 +63,10 @@ export function QuizViewer({ unit, moduleId, onComplete }: Props) {
   return (
     <div className="glass-card rounded-2xl p-8 max-w-3xl mx-auto">
       {/* Header */}
-      <div className="mb-8 flex justify-between items-center border-b border-white/10 pb-4">
+      <div className="mb-8 flex justify-between items-center border-b border-black/5 pb-4">
         <div>
           <h2 className="text-3xl font-bold">{unit.title || "Knowledge Check"}</h2>
-          <p className="text-slate-400 mt-1">
+          <p className="text-slate-500 mt-1">
             {questions.length} question{questions.length !== 1 ? "s" : ""} — answer all to submit.
           </p>
         </div>
@@ -79,7 +78,7 @@ export function QuizViewer({ unit, moduleId, onComplete }: Props) {
       {/* Questions */}
       <div className="space-y-8">
         {questions.map((q, idx) => (
-          <div key={idx} className="p-6 bg-white/5 rounded-xl border border-white/5">
+          <div key={idx} className="p-6 bg-slate-50 rounded-xl border border-black/5">
             <h3 className="text-base font-semibold mb-4 text-slate-100">
               {idx + 1}. {q.question}
             </h3>
@@ -93,10 +92,10 @@ export function QuizViewer({ unit, moduleId, onComplete }: Props) {
                 if (submitted) {
                   if (isCorrect) btnClass += "bg-green-500/20 border-green-500/50 text-green-300 shadow-[0_0_10px_rgba(34,197,94,0.2)]";
                   else if (isWrongSelected) btnClass += "bg-red-500/20 border-red-500/50 text-red-300";
-                  else btnClass += "bg-white/5 border-white/10 text-slate-500 opacity-50";
+                  else btnClass += "bg-slate-50 border-black/5 text-slate-500 opacity-50";
                 } else {
                   if (isSelected) btnClass += "bg-accent/20 border-accent/50 text-accent shadow-[0_0_10px_rgba(255,215,0,0.15)]";
-                  else btnClass += "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20";
+                  else btnClass += "bg-slate-50 border-black/5 text-slate-700 hover:bg-slate-200 hover:border-white/20";
                 }
 
                 return (
@@ -116,18 +115,18 @@ export function QuizViewer({ unit, moduleId, onComplete }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="mt-10 flex justify-end pt-6 border-t border-white/10">
+      <div className="mt-10 flex justify-end pt-6 border-t border-black/5">
         {!submitted ? (
           <button
             onClick={handleSubmit}
             disabled={Object.keys(selectedAnswers).length < questions.length}
-            className="px-6 py-3 bg-accent text-background-dark font-bold rounded-xl hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_12px_rgba(255,215,0,0.2)]"
+            className="px-6 py-3 bg-accent text-slate-900 font-bold rounded-xl hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_12px_rgba(255,215,0,0.2)]"
           >
             Submit Answers
           </button>
         ) : (
           <div className="flex items-center gap-6 w-full justify-between">
-            <div className="text-xl font-bold bg-white/5 px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2">
+            <div className="text-xl font-bold bg-slate-50 px-4 py-2 rounded-lg border border-black/5 flex items-center gap-2">
               Score:
               <span className={scorePercent >= 60 ? "text-green-400" : "text-red-400"}>
                 {scorePercent}%
@@ -139,15 +138,13 @@ export function QuizViewer({ unit, moduleId, onComplete }: Props) {
             </div>
             <button
               onClick={handleContinue}
-              className="px-6 py-3 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-all shadow-[0_4px_12px_rgba(255,179,0,0.2)] flex items-center gap-2"
+              className="px-6 py-3 bg-primary text-slate-900 font-bold rounded-xl hover:bg-primary/90 transition-all shadow-[0_4px_12px_rgba(255,179,0,0.2)] flex items-center gap-2"
             >
               Continue Path <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </button>
           </div>
         )}
       </div>
-
-      <NotesPanel moduleId={moduleId} unitId={unit._id} />
     </div>
   );
 }

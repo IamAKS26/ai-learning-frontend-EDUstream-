@@ -28,6 +28,7 @@ export default function ModuleCatalogPage() {
   const [genError, setGenError] = useState("");
   const [deletingCourse, setDeletingCourse] = useState<Course | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeTab, setActiveTab] = useState("My Courses"); // Ref Tabs
 
   const fetchCourses = async () => {
     setLoading(true);
@@ -75,40 +76,56 @@ export default function ModuleCatalogPage() {
     }
   };
 
-  const levelColors: Record<string, string> = {
-    Beginner:     "bg-green-500/20 text-green-400 border-green-500/30",
-    Intermediate: "bg-accent/20 text-accent border-accent/30",
-    Advanced:     "bg-red-500/20 text-red-400 border-red-500/30",
-  };
-
   return (
     <DashboardLayout>
-      <div className="p-8 space-y-8">
-        {/* Header */}
-        <div className="flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">Module Catalog</h2>
-            <p className="text-slate-500 mt-1">AI-tailored courses — browse or generate your own.</p>
+      <div className="space-y-8">
+        
+        {/* Search Bar Placeholder (Centered) */}
+        <div className="flex justify-center mt-2 mb-6">
+          <div className="relative w-full max-w-md">
+            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input 
+               type="text" 
+               placeholder="Search" 
+               className="w-full bg-white border border-black/5 shadow-sm rounded-full pl-12 pr-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-primary/50" 
+            />
+          </div>
+        </div>
+
+        {/* Tabs & Generate Button */}
+        <div className="flex items-center justify-between border-b border-black/5 pb-4 px-2">
+          <div className="flex items-center gap-2">
+            {['My Courses', 'Enrolled', 'Available'].map(tab => (
+              <button 
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                  activeTab === tab ? 'bg-[#FEF3C7] text-slate-900' : 'text-slate-500 hover:bg-slate-50'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
           <button
             onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-all shadow-[0_4px_12px_rgba(255,179,0,0.25)] text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white font-bold rounded-full hover:bg-slate-800 transition-colors shadow-sm text-sm"
           >
             <span className="material-symbols-outlined text-sm">auto_awesome</span>
-            Generate with AI
+            Generate
           </button>
         </div>
 
         {/* AI Generate Form */}
         {showForm && (
-          <div className="glass-card rounded-2xl p-6 border border-primary/20 space-y-4">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary">auto_awesome</span>
+          <div className="bg-white rounded-3xl p-6 border border-primary/20 shadow-lg space-y-4 slide-up">
+            <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900">
+              <span className="material-symbols-outlined text-primary text-2xl">magic_button</span>
               Generate a New Course
             </h3>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               The AI will plan a full course outline, then generate lessons and quizzes for every topic.
-              <span className="text-primary font-medium"> This takes ~30–60 seconds.</span>
+              <span className="text-primary font-semibold"> This takes ~30–60 seconds.</span>
             </p>
             <form onSubmit={handleGenerate} className="flex flex-col sm:flex-row gap-3">
               <input
@@ -117,12 +134,12 @@ export default function ModuleCatalogPage() {
                 value={topic}
                 onChange={e => setTopic(e.target.value)}
                 placeholder='e.g. "Python for Data Science"'
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:ring-1 focus:ring-primary/50 outline-none"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-primary outline-none"
               />
               <select
                 value={level}
                 onChange={e => setLevel(e.target.value as typeof level)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-100 outline-none focus:ring-1 focus:ring-primary/50"
+                className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 focus:ring-primary"
               >
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
@@ -131,17 +148,17 @@ export default function ModuleCatalogPage() {
               <button
                 type="submit"
                 disabled={generating}
-                className="px-5 py-2.5 bg-primary text-background-dark font-bold rounded-xl hover:bg-primary/90 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-3 bg-primary text-slate-900 font-bold rounded-xl hover:bg-primary/90 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[140px]"
               >
                 {generating
-                  ? <><div className="w-4 h-4 border-2 border-background-dark/40 border-t-background-dark rounded-full animate-spin" /> Generating...</>
+                  ? <><div className="w-4 h-4 border-2 border-slate-900/40 border-t-slate-900 rounded-full animate-spin" /> ...</>
                   : <><span className="material-symbols-outlined text-sm">bolt</span> Generate</>
                 }
               </button>
             </form>
             {genError && (
-              <p className="text-red-400 text-sm flex items-center gap-1">
-                <span className="material-symbols-outlined text-sm">error</span> {genError}
+              <p className="text-red-500 text-sm font-semibold flex items-center gap-1 mt-2">
+                 <span className="material-symbols-outlined text-sm">error</span> {genError}
               </p>
             )}
           </div>
@@ -151,15 +168,15 @@ export default function ModuleCatalogPage() {
         {loading && (
           <div className="flex items-center gap-3 text-slate-400 py-12 justify-center">
             <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <span>Loading courses...</span>
+            <span className="font-medium text-slate-500">Loading courses...</span>
           </div>
         )}
 
         {error && (
-          <div className="glass-card rounded-2xl p-6 border border-red-500/20 text-center space-y-3">
-            <span className="material-symbols-outlined text-4xl text-red-400 block">cloud_off</span>
-            <p className="text-red-400">{error}</p>
-            <button onClick={fetchCourses} className="text-sm text-primary hover:underline">Retry</button>
+          <div className="bg-red-50 rounded-3xl p-6 border border-red-100 text-center space-y-3">
+            <span className="material-symbols-outlined text-4xl text-red-500 block">cloud_off</span>
+            <p className="text-red-500 font-medium">{error}</p>
+            <button onClick={fetchCourses} className="px-4 py-2 bg-white text-sm text-red-600 font-bold border border-red-200 rounded-lg shadow-sm">Retry</button>
           </div>
         )}
 
@@ -167,69 +184,77 @@ export default function ModuleCatalogPage() {
         {!loading && !error && (
           <>
             {courses.length === 0 ? (
-              <div className="text-center py-20 space-y-4">
-                <span className="material-symbols-outlined text-6xl text-slate-700 block">menu_book</span>
-                <p className="text-slate-500">No courses yet. Generate your first one with AI!</p>
+              <div className="text-center py-20 space-y-4 bg-white rounded-3xl border border-black/5 shadow-sm">
+                <span className="material-symbols-outlined text-6xl text-slate-300 block">menu_book</span>
+                <p className="text-slate-500 font-medium">No courses yet. Generate your first one with AI!</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {courses.map(course => (
-                  <div key={course._id} className="glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-white/15 transition-all">
-                    {/* Thumbnail */}
-                    <div className="h-36 bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center relative">
-                      <span className="material-symbols-outlined text-5xl text-primary/30">auto_stories</span>
-                      <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
-                        {course.isAIGenerated && (
-                          <span className="px-2 py-0.5 bg-primary/90 rounded text-[10px] font-bold text-background-dark uppercase tracking-wider">
-                            AI Generated
-                          </span>
-                        )}
-                        {course.isPublished && (
-                          <span className="px-2 py-0.5 bg-green-500/80 rounded text-[10px] font-bold text-white uppercase tracking-wider">
-                            Published
-                          </span>
-                        )}
+                  <Link href={`/module/${course._id}`} key={course._id} className="bg-white rounded-[1.5rem] p-5 border border-black/5 shadow-sm hover:shadow-md transition-shadow group flex flex-col gap-4 relative overflow-hidden">
+                    
+                    {/* Fake Delete Button overlay */}
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeletingCourse(course); }}
+                        className="p-1.5 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg transition-colors border border-red-100 shadow-sm"
+                        title="Delete Course"
+                      >
+                        <span className="material-symbols-outlined text-sm block">delete</span>
+                      </button>
+                    </div>
+
+                    <div className="flex justify-between items-start mt-2">
+                       {/* Icon box or AI tag */}
+                       <div className="flex flex-col gap-2 w-full">
+                         <div className="flex justify-between items-start w-full gap-2">
+                           <h4 className="font-bold text-lg text-slate-900 leading-tight pr-6">{course.title}</h4>
+                           <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-colors flex-shrink-0">
+                             <span className="material-symbols-outlined text-[16px] -rotate-45">arrow_forward</span>
+                           </div>
+                         </div>
+                         <p className="text-xs text-slate-500 font-medium mb-1">
+                           {course.isAIGenerated ? "AI Generated • Instructor" : "Sarah Johnson • Instructor"}
+                         </p>
+                       </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 mt-2 mb-2">
+                      <div>
+                        <span className="text-xl font-bold text-slate-900">20</span>
+                        <span className="text-xs text-slate-500 ml-1">Hours</span>
                       </div>
-                      <div className="absolute top-3 right-3">
-                        <button
-                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeletingCourse(course); }}
-                          className="p-1.5 bg-red-500/20 hover:bg-red-500/80 text-red-500 hover:text-white rounded-lg transition-colors backdrop-blur-md"
-                          title="Delete Course"
-                        >
-                          <span className="material-symbols-outlined text-sm block">delete</span>
-                        </button>
+                      <div>
+                        <span className="text-xl font-bold text-slate-900">{course.lessonsCount || 15}</span>
+                        <span className="text-xs text-slate-500 ml-1">Lessons</span>
                       </div>
                     </div>
 
-                    <div className="p-5 flex-1 flex flex-col">
-                      {/* Level badge */}
-                      {course.level && (
-                        <span className={`self-start px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border mb-2 ${levelColors[course.level] ?? "bg-white/5 text-slate-400 border-white/10"}`}>
-                          {course.level}
+                    <div className="flex gap-2 flex-wrap">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-50 text-slate-500 border border-slate-100">
+                        {course.level || "Beginner"}
+                      </span>
+                      {course.category && (
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-50 text-slate-500 border border-slate-100">
+                          {course.category}
                         </span>
                       )}
-
-                      <h4 className="font-bold text-base mb-1 line-clamp-2">{course.title}</h4>
-                      <p className="text-xs text-slate-500 mb-4 flex-1 line-clamp-3">
-                        {course.description || "A specialized module created by the AI personalization engine."}
-                      </p>
-
-                      {course.lessonsCount != null && course.lessonsCount > 0 && (
-                        <p className="text-xs text-slate-500 mb-3 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-sm">layers</span>
-                          {course.lessonsCount} units
-                          {course.category && <> · {course.category}</>}
-                        </p>
-                      )}
-
-                      <Link
-                        href={`/module/${course._id}`}
-                        className="w-full py-2 bg-white/5 border border-white/10 text-white text-center text-sm font-semibold rounded-lg hover:bg-primary/20 hover:border-primary/30 hover:text-primary transition-all"
-                      >
-                        View Details
-                      </Link>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-50 text-slate-500 border border-slate-100">Design</span>
                     </div>
-                  </div>
+
+                    <div className="mt-auto pt-6">
+                      <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider mb-2">
+                        <span className="text-slate-500">On Progress</span>
+                        <span className="text-slate-900">60%</span>
+                      </div>
+                      <div className="w-full bg-[#FCF8E8] rounded-full h-2 overflow-hidden flex">
+                         {/* Stripe effect exactly like image */}
+                         <div className="bg-[#FEF0C7] h-full w-[60%] border-r-2 border-white relative overflow-hidden">
+                           <div className="absolute inset-0 opacity-30" style={{backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 2px, #FFB300 2px, #FFB300 4px)"}}></div>
+                         </div>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -239,27 +264,27 @@ export default function ModuleCatalogPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingCourse && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background-dark/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-sm p-6 rounded-2xl border border-red-500/20 shadow-2xl animate-in slide-in-from-bottom-4 fade-in">
-            <div className="flex items-center gap-3 mb-4 text-red-400">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-sm p-6 rounded-3xl border border-black/5 shadow-2xl animate-in slide-in-from-bottom-4 fade-in">
+            <div className="flex items-center gap-3 mb-4 text-red-500">
               <span className="material-symbols-outlined text-3xl">warning</span>
-              <h3 className="text-xl font-bold">Delete Course?</h3>
+              <h3 className="text-xl font-bold text-slate-900">Delete Course?</h3>
             </div>
-            <p className="text-slate-400 text-sm mb-6">
-              Are you sure you want to delete <span className="text-white font-semibold">"{deletingCourse.title}"</span>? This will permanently remove all associated modules, lessons, and quizzes. This action cannot be undone.
+            <p className="text-slate-500 text-sm mb-6">
+              Are you sure you want to delete <span className="text-slate-900 font-semibold">"{deletingCourse.title}"</span>? This will permanently remove all associated modules, lessons, and quizzes. This action cannot be undone.
             </p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex gap-3 justify-end mt-4">
               <button
                 onClick={() => setDeletingCourse(null)}
                 disabled={isDeleting}
-                className="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
+                className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-full transition-colors text-sm disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteCourse}
                 disabled={isDeleting}
-                className="px-4 py-2 bg-red-500/20 hover:bg-red-500/40 text-red-400 font-bold rounded-xl transition-colors text-sm disabled:opacity-50 flex items-center gap-2"
+                className="px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white font-bold rounded-full transition-colors text-sm disabled:opacity-50 flex items-center gap-2 shadow-sm shadow-red-500/20"
               >
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>
