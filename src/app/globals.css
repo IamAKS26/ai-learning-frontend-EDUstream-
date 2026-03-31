@@ -3,8 +3,10 @@
 @theme {
   --color-primary: #FFB300;
   --color-accent: #FFD700;
-  --color-background-dark: #FBF9F1; /* Warm off-white */
-  --color-surface-dark: #FFFFFF; /* Pure white for cards */
+  --color-background-dark: #FBF9F1;
+  /* Warm off-white */
+  --color-surface-dark: #FFFFFF;
+  /* Pure white for cards */
   --color-glass: rgba(0, 0, 0, 0.02);
   --color-glass-border: rgba(0, 0, 0, 0.05);
   --font-display: var(--font-inter), "Inter", sans-serif;
@@ -17,7 +19,8 @@
 
   body {
     background-color: var(--color-background-dark);
-    color: #111111; /* Dark text for light mode */
+    color: #111111;
+    /* Dark text for light mode */
     -webkit-font-smoothing: antialiased;
   }
 
@@ -25,13 +28,16 @@
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 10px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
   }
@@ -55,20 +61,29 @@
 
   .nav-item:hover {
     color: #0f172a;
-    background-color: rgba(0,0,0,0.03);
+    background-color: rgba(0, 0, 0, 0.03);
   }
 
   .nav-item-active {
     color: #0f172a;
-    background-color: #FEF3C7; /* yellow-100 */
+    background-color: #FEF3C7;
+    /* yellow-100 */
     font-weight: 600;
   }
 
   /* Smooth content entry animation */
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+
   .slide-up {
     animation: slideUp 0.35s ease-out both;
   }

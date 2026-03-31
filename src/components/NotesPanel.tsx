@@ -301,18 +301,18 @@ export function NotesPanel({ courseId, moduleId, unitId }: Props) {
 
           {/* Body: list or editor */}
           {activeNote ? (
-            <div className="flex-1 flex flex-col bg-[#1a1a1a]/50">
+            <div className="flex-1 flex flex-col bg-white">
               {/* Editor Toolbar */}
               <div className="flex items-center justify-between px-3 py-2 border-b border-black/5 bg-slate-50">
                 <div className="flex items-center gap-2">
-                  <button onClick={() => { setActiveNote(null); setDraftContent(""); }} className="text-xs text-slate-500 hover:text-white flex items-center gap-1 transition-colors px-2 py-1 rounded-md hover:bg-slate-100">
+                  <button onClick={() => { setActiveNote(null); setDraftContent(""); }} className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 transition-colors px-2 py-1 rounded-md hover:bg-slate-100">
                     <span className="material-symbols-outlined text-sm">arrow_back</span> All
                   </button>
-                  <div className="h-4 w-px bg-slate-100"></div>
-                  <button onClick={() => setIsPreview(!isPreview)} className={`text-xs px-2 py-1 rounded ${!isPreview ? 'bg-primary/20 text-primary' : 'text-slate-500 hover:text-white'}`}>
+                  <div className="h-4 w-px bg-slate-200"></div>
+                  <button onClick={() => setIsPreview(false)} className={`text-xs px-2 py-1 rounded transition-colors ${!isPreview ? 'bg-primary text-slate-900 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>
                     Write
                   </button>
-                  <button onClick={() => setIsPreview(!isPreview)} className={`text-xs px-2 py-1 rounded ${isPreview ? 'bg-primary/20 text-primary' : 'text-slate-500 hover:text-white'}`}>
+                  <button onClick={() => setIsPreview(true)} className={`text-xs px-2 py-1 rounded transition-colors ${isPreview ? 'bg-primary text-slate-900 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>
                     Preview
                   </button>
                 </div>
@@ -325,7 +325,7 @@ export function NotesPanel({ courseId, moduleId, unitId }: Props) {
               </div>
               
               {isPreview ? (
-                 <div className="flex-1 overflow-auto p-4 text-sm text-slate-700 markdown-body prose prose-invert max-w-none prose-sm">
+                 <div className="flex-1 overflow-auto p-4 text-sm text-slate-700 markdown-body prose max-w-none prose-sm">
                     {draftContent ? (
                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
                          {draftContent}
@@ -340,7 +340,7 @@ export function NotesPanel({ courseId, moduleId, unitId }: Props) {
                   value={draftContent}
                   onChange={e => handleContentChange(e.target.value)}
                   placeholder="Write in Markdown (e.g. # Header, * bold *)..."
-                  className="flex-1 bg-transparent p-4 text-sm text-slate-200 outline-none resize-none leading-relaxed placeholder:text-slate-600 focus:ring-0 font-mono"
+                  className="flex-1 bg-transparent p-4 text-sm text-slate-900 outline-none resize-none leading-relaxed placeholder:text-slate-400 focus:ring-0 font-mono"
                 />
               )}
             </div>
@@ -363,7 +363,7 @@ export function NotesPanel({ courseId, moduleId, unitId }: Props) {
               {notes.map(note => (
                 <div
                   key={note._id}
-                  className="group flex flex-col p-3 rounded-xl bg-slate-50 hover:bg-slate-200 cursor-pointer transition-colors border border-transparent hover:border-white/10 shadow-sm gap-2"
+                  className="group flex flex-col p-3 rounded-xl bg-slate-50 hover:bg-white cursor-pointer transition-all border border-transparent hover:border-primary/20 shadow-sm gap-2"
                   onClick={() => openNote(note)}
                 >
                   <div className="flex justify-between items-start gap-2">

@@ -43,7 +43,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md glass-card p-8 rounded-2xl relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
-        
+
         <div className="relative z-10 flex flex-col items-center mb-8">
           <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(255,179,0,0.4)] mb-4">
             <span className="material-symbols-outlined text-slate-900 text-2xl">school</span>

@@ -125,24 +125,24 @@ export default function NotesPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {moduleNotes.map(note => (
-                <div key={note._id} className="glass-card rounded-xl p-5 border border-black/5 hover:border-white/20 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.2)] bg-gradient-to-br from-white/[0.03] to-transparent group flex flex-col h-full">
+                <div key={note._id} className="glass-card rounded-xl p-5 border border-black/5 hover:border-primary/20 transition-all shadow-sm bg-white group flex flex-col h-full">
                   {editingId === note._id ? (
                     <div className="flex flex-col h-full flex-1">
                       <div className="flex items-center justify-between mb-3 border-b border-black/5 pb-2">
-                        <span className={`text-xs font-medium flex items-center gap-1.5 ${saving ? 'text-primary' : 'text-green-400'}`}>
+                        <span className={`text-xs font-medium flex items-center gap-1.5 ${saving ? 'text-primary' : 'text-green-500'}`}>
                            <span className="relative flex h-2 w-2">
                              {saving && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>}
                              <span className={`relative inline-flex rounded-full h-2 w-2 ${saving ? 'bg-primary' : 'bg-green-500'}`}></span>
                            </span>
                           {saving ? "Saving to device…" : "Saved locally"}
                         </span>
-                        <button onClick={() => setEditingId(null)} className="text-xs font-bold text-slate-900 bg-slate-100 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors">Done</button>
+                        <button onClick={() => setEditingId(null)} className="text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors">Done</button>
                       </div>
                       <textarea
                         autoFocus
                         value={draftContent}
                         onChange={e => handleEditChange(e.target.value)}
-                        className="w-full h-full min-h-[120px] bg-slate-50 border border-black/5 rounded-xl p-4 text-sm text-slate-200 outline-none resize-none focus:border-primary/40 focus:bg-black/40 transition-all leading-relaxed placeholder:text-slate-600"
+                        className="w-full h-full min-h-[120px] bg-slate-50 border border-black/5 rounded-xl p-4 text-sm text-slate-900 outline-none resize-none focus:border-primary/40 focus:bg-white transition-all leading-relaxed placeholder:text-slate-400"
                         placeholder="Write something brilliant..."
                       />
                     </div>
@@ -158,14 +158,14 @@ export default function NotesPage() {
                         <div className="flex gap-1.5">
                           <button
                             onClick={(e) => { e.stopPropagation(); startEdit(note); }}
-                            className="p-1.5 rounded-md text-slate-500 hover:bg-slate-200 hover:text-white transition-colors"
+                            className="p-1.5 rounded-md text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors"
                             title="Edit"
                           >
                             <span className="material-symbols-outlined text-sm">edit</span>
                           </button>
                           <button
                             onClick={(e) => { e.stopPropagation(); deleteNote(note._id); }}
-                            className="p-1.5 rounded-md text-slate-500 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                            className="p-1.5 rounded-md text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
                             title="Delete"
                           >
                             <span className="material-symbols-outlined text-sm">delete</span>

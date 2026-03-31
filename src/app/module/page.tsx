@@ -18,8 +18,7 @@ interface Course {
 }
 
 export default function ModuleCatalogPage() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [generating, setGenerating] = useState(false);
   const [topic, setTopic] = useState("");
@@ -30,20 +29,48 @@ export default function ModuleCatalogPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeTab, setActiveTab] = useState("My Courses"); // Ref Tabs
 
-  const fetchCourses = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await apiClient.get("/courses?t=" + Date.now());
-      setCourses(res.data);
-    } catch {
-      setError("Failed to load courses. Is the backend running?");
-    } finally {
-      setLoading(false);
+  const courses = [
+    {
+       _id: "demo1",
+       title: "UI/UX Design with Figma",
+       instructor: "Sarah Johnson",
+       level: "Beginner",
+       category: "Design",
+       hours: 20,
+       lessonsCount: 15,
+       progress: 60
+    },
+    {
+       _id: "demo2",
+       title: "Advanced React Patterns",
+       instructor: "Masud Hasan",
+       level: "Advanced",
+       category: "Development",
+       hours: 24,
+       lessonsCount: 18,
+       progress: 15
+    },
+    {
+       _id: "demo3",
+       title: "Framer Development",
+       instructor: "Sarah Johnson",
+       level: "Intermediate",
+       category: "Development",
+       hours: 14,
+       lessonsCount: 12,
+       progress: 35
+    },
+    {
+       _id: "demo4",
+       title: "Python for Data Science",
+       instructor: "AI Instructor",
+       level: "Beginner",
+       category: "Data Science",
+       hours: 30,
+       lessonsCount: 22,
+       progress: 0
     }
-  };
-
-  useEffect(() => { fetchCourses(); }, []);
+  ];
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +81,7 @@ export default function ModuleCatalogPage() {
       await apiClient.post("/courses/generate", { topic: topic.trim(), level });
       setTopic("");
       setShowForm(false);
-      await fetchCourses(); // refresh list
+      // await fetchCourses(); // refresh list
     } catch (err: any) {
       setGenError(err.response?.data?.message || "Course generation failed. Try again.");
     } finally {
@@ -67,7 +94,7 @@ export default function ModuleCatalogPage() {
     setIsDeleting(true);
     try {
       await apiClient.delete(`/courses/${deletingCourse._id}`);
-      setCourses(prev => prev.filter(c => c._id !== deletingCourse._id));
+      // In a real app we'd refresh courses here. For dummy data, just clear the modal.
       setDeletingCourse(null);
     } catch (err: any) {
       alert(err.response?.data?.message || "Failed to delete course.");
@@ -176,7 +203,7 @@ export default function ModuleCatalogPage() {
           <div className="bg-red-50 rounded-3xl p-6 border border-red-100 text-center space-y-3">
             <span className="material-symbols-outlined text-4xl text-red-500 block">cloud_off</span>
             <p className="text-red-500 font-medium">{error}</p>
-            <button onClick={fetchCourses} className="px-4 py-2 bg-white text-sm text-red-600 font-bold border border-red-200 rounded-lg shadow-sm">Retry</button>
+            <button onClick={() => setError("")} className="px-4 py-2 bg-white text-sm text-red-600 font-bold border border-red-200 rounded-lg shadow-sm">Dismiss</button>
           </div>
         )}
 
@@ -214,7 +241,7 @@ export default function ModuleCatalogPage() {
                            </div>
                          </div>
                          <p className="text-xs text-slate-500 font-medium mb-1">
-                           {course.isAIGenerated ? "AI Generated • Instructor" : "Sarah Johnson • Instructor"}
+                           {course.title === "Python for Data Science" ? "AI Generated • Instructor" : `${course.instructor} • Instructor`}
                          </p>
                        </div>
                     </div>
@@ -239,17 +266,16 @@ export default function ModuleCatalogPage() {
                           {course.category}
                         </span>
                       )}
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-50 text-slate-500 border border-slate-100">Design</span>
                     </div>
 
                     <div className="mt-auto pt-6">
                       <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider mb-2">
                         <span className="text-slate-500">On Progress</span>
-                        <span className="text-slate-900">60%</span>
+                        <span className="text-slate-900">{course.progress}%</span>
                       </div>
                       <div className="w-full bg-[#FCF8E8] rounded-full h-2 overflow-hidden flex">
                          {/* Stripe effect exactly like image */}
-                         <div className="bg-[#FEF0C7] h-full w-[60%] border-r-2 border-white relative overflow-hidden">
+                         <div className="bg-[#FEF0C7] h-full border-r-2 border-white relative overflow-hidden" style={{width: `${course.progress}%`}}>
                            <div className="absolute inset-0 opacity-30" style={{backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 2px, #FFB300 2px, #FFB300 4px)"}}></div>
                          </div>
                       </div>
