@@ -13,10 +13,10 @@ export function GlobalNotesWrapper() {
   const [unitId, setUnitId] = useState<string | undefined>();
   
   // Decide whether to show the notes panel
-  // Show it if we are on a module (course) page or a unit page
+  // Show it everywhere for signed-in users 
   const isModulePage = pathname.startsWith("/module/");
   const isUnitPage = pathname.startsWith("/unit/");
-  const showNotes = !!user && (isModulePage || isUnitPage);
+  const showNotes = !!user;
 
   useEffect(() => {
     if (isModulePage) {

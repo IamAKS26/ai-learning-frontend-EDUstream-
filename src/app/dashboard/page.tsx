@@ -11,6 +11,10 @@ interface Course {
   title: string;
   description?: string;
   level?: string;
+  category?: string;
+  instructor?: string;
+  hours?: number;
+  progress?: number;
   isAIGenerated?: boolean;
   isPublished?: boolean;
   lessonsCount?: number;
@@ -20,30 +24,79 @@ interface Course {
 export default function DashboardPage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState({
+    xp: 0,
+    badges: 0,
+    certificates: 0,
+    streak: 0,
+    learningHours: 0,
+  });
+  const [myCourses, setMyCourses] = useState<Course[]>([]);
 
-  // Hardcode dummy data to perfectly replicate the reference image regardless of backend state.
-  const myCourses = [
-    {
-      _id: "demo1",
-      title: "UI/UX Design with Figma",
-      instructor: "Masud Hasan",
-      level: "Beginner",
-      category: "Design",
-      hours: 20,
-      lessonsCount: 15,
-      progress: 60
-    },
-    {
-      _id: "demo2",
-      title: "Framer Development",
-      instructor: "Sarah Johnson",
-      level: "Intermediate",
-      category: "Development",
-      hours: 14,
-      lessonsCount: 12,
-      progress: 35
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLoading(true);
+      try {
+        const res = await apiClient.get("/stats/overview");
+        setStats({
+          xp: res.data.xp || 0,
+          badges: res.data.badges || 0,
+          certificates: res.data.certificates || 0,
+          streak: res.data.streak || 0,
+          learningHours: res.data.learningHours || 0,
+        });
+        setMyCourses(res.data.courses || []);
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchStats();
     }
-  ];
+  }, [user]);
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Skeleton Welcome Section */}
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div className="flex-1 space-y-4">
+              <div className="h-10 w-3/4 bg-slate-200 rounded-lg animate-pulse"></div>
+              <div className="h-5 w-1/2 bg-slate-200 rounded-lg animate-pulse"></div>
+            </div>
+            <div className="flex items-center gap-8 bg-white p-6 rounded-3xl border border-black/5 shadow-sm">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="text-center px-4 border-r border-slate-100 last:border-0 flex flex-col items-center">
+                  <div className="h-10 w-16 bg-slate-200 rounded mb-2 animate-pulse mx-auto"></div>
+                  <div className="h-3 w-20 bg-slate-200 rounded animate-pulse mx-auto"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Skeleton Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-8 space-y-6">
+              <div className="bg-slate-200 rounded-3xl h-80 border border-black/5 shadow-sm animate-pulse"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[1, 2].map(i => (
+                  <div key={i} className="bg-slate-200 rounded-3xl h-48 animate-pulse shadow-sm border border-black/5" />
+                ))}
+              </div>
+            </div>
+            <div className="lg:col-span-4 space-y-6">
+              <div className="bg-slate-200 rounded-3xl h-32 border border-black/5 shadow-sm animate-pulse"></div>
+              <div className="bg-slate-200 rounded-3xl h-64 border border-black/5 shadow-sm animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -52,33 +105,33 @@ export default function DashboardPage() {
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex-1">
             <h2 className="text-[2.5rem] font-bold tracking-tight text-slate-900 flex items-center gap-3">
-              Welcome back, {user?.name?.split(" ")[0] || "Nafis"}! <span className="text-4xl">👋</span>
+              Welcome back, {user?.name?.split(" ")[0] || "User"}! <span className="text-4xl">👋</span>
             </h2>
             <p className="text-slate-500 mt-2 text-base">
-              Keep learning and earn 50 XP today! You're on a <span className="font-semibold text-slate-700">5-day streak!</span>
+              Keep learning and earn 50 XP today! You're on a <span className="font-semibold text-slate-700">{stats.streak}-day streak!</span>
             </p>
           </div>
 
           <div className="flex items-center gap-8 bg-white p-6 rounded-3xl border border-black/5 shadow-sm">
             <div className="text-center px-4 border-r border-slate-100 last:border-0">
-              <h3 className="text-4xl font-semibold text-slate-900">480</h3>
+              <h3 className="text-4xl font-semibold text-slate-900">{stats.xp}</h3>
               <p className="text-xs text-slate-500 uppercase tracking-wider mt-1 font-medium">Total XP</p>
             </div>
             <div className="text-center px-4 border-r border-slate-100 last:border-0">
-              <h3 className="text-4xl font-semibold text-slate-900">15</h3>
+              <h3 className="text-4xl font-semibold text-slate-900">{stats.badges}</h3>
               <p className="text-xs text-slate-500 uppercase tracking-wider mt-1 font-medium">Badges Earned</p>
             </div>
             <div className="text-center px-4 border-r border-slate-100 last:border-0">
-              <h3 className="text-4xl font-semibold text-slate-900">12</h3>
+              <h3 className="text-4xl font-semibold text-slate-900">{stats.certificates}</h3>
               <p className="text-xs text-slate-500 uppercase tracking-wider mt-1 font-medium">Certificates</p>
             </div>
           </div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Chart & Courses */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-8 space-y-6">
 
             {/* Learning Hours Chart */}
             <div className="bg-white p-6 rounded-3xl border border-black/5 shadow-sm h-80 flex flex-col">
@@ -129,13 +182,7 @@ export default function DashboardPage() {
 
             {/* Courses (horizontal scroll or grid) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {loading ? (
-                <div className="flex gap-4 col-span-2">
-                  {[1, 2].map(i => (
-                    <div key={i} className="flex-1 bg-white rounded-3xl h-48 animate-pulse shadow-sm border border-black/5" />
-                  ))}
-                </div>
-              ) : myCourses.length > 0 ? (
+              {myCourses.length > 0 ? (
                 myCourses.map(course => (
                   <Link href={`/module/${course._id}`} key={course._id} className="bg-white rounded-3xl p-5 border border-black/5 shadow-sm hover:shadow-md transition-shadow group flex flex-col gap-4 relative overflow-hidden">
                     <div className="flex justify-between items-start">
@@ -184,7 +231,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Right Column: Calendar & Upcoming */}
-          <div className="space-y-6">
+          <div className="lg:col-span-4 space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-black/5 shadow-sm">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-bold text-slate-900">Calendar</h3>

@@ -32,7 +32,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen w-full bg-background-dark text-slate-900 flex flex-col font-display">
       <TopNav />
-      <main className="flex-1 w-full max-w-7xl mx-auto p-8 flex flex-col">
+      <main className="flex-1 w-full p-6 md:p-8 lg:p-10 flex flex-col">
         {children}
       </main>
     </div>
