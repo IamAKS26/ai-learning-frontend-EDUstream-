@@ -124,7 +124,6 @@ export default function RegisterPage() {
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => setError("Google Login Failed")}
-            useOneTap
             shape="pill"
             theme="outline"
             size="large"
