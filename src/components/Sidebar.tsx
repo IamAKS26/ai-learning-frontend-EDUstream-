@@ -26,7 +26,7 @@ export function Sidebar() {
           <span className="material-symbols-outlined text-slate-900 text-xl">school</span>
         </div>
         <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-          EDUstream
+          EduStream
         </h1>
       </div>
 

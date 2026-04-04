@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { GlobalNotesWrapper } from "@/components/GlobalNotesWrapper";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const fontDisplay = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -11,7 +12,7 @@ const fontDisplay = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "LearnAI — Educational Platform",
+  title: "EduStream — Educational Platform",
   description: "Personalized AI learning platform.",
 };
 
@@ -29,10 +30,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-background-dark text-slate-900 antialiased selection:bg-primary/20 selection:text-primary">
-        <AuthProvider>
-          {children}
-          <GlobalNotesWrapper />
-        </AuthProvider>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+          <AuthProvider>
+            {children}
+            <GlobalNotesWrapper />
+          </AuthProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import apiClient from "@/lib/apiClient";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,6 +39,24 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const response = await apiClient.post("/auth/google", { token: credentialResponse.credential });
+      if (response.data.token && response.data.user) {
+        login(response.data.token, response.data.user);
+        router.push("/dashboard");
+      } else {
+        setError("Invalid response from server.");
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Google login failed.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background-dark p-4 font-display text-slate-100">
       <div className="w-full max-w-md glass-card p-8 rounded-2xl relative overflow-hidden">
@@ -49,7 +68,7 @@ export default function LoginPage() {
             <span className="material-symbols-outlined text-slate-900 text-2xl">school</span>
           </div>
           <h2 className="text-2xl font-bold">Welcome Back</h2>
-          <p className="text-slate-500 text-sm mt-1">Sign in to your Nexus AI account</p>
+          <p className="text-slate-500 text-sm mt-1">Sign in to your EduStream account</p>
         </div>
 
         {error && (
@@ -90,6 +109,23 @@ export default function LoginPage() {
             {!isLoading && <span className="material-symbols-outlined ml-2 text-sm">arrow_forward</span>}
           </button>
         </form>
+
+        <div className="mt-6 flex items-center justify-center">
+          <div className="h-px bg-black/10 flex-1"></div>
+          <span className="px-4 text-xs font-medium text-slate-400 uppercase tracking-wider">or sign in with</span>
+          <div className="h-px bg-black/10 flex-1"></div>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError("Google Login Failed")}
+            useOneTap
+            shape="pill"
+            theme="outline"
+            size="large"
+          />
+        </div>
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Don't have an account?{" "}

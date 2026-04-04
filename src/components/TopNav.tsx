@@ -58,7 +58,7 @@ export function TopNav() {
           </svg>
         </div>
         <h1 className="text-xl font-bold tracking-tight text-slate-900">
-          LearnAI
+          EduStream
         </h1>
       </div>
 

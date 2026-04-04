@@ -108,7 +108,7 @@ export default function SettingsPage() {
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
                 <input 
                   type="email" 
-                  defaultValue={user?.email || "student@nexus.ai"} 
+                  defaultValue={user?.email || "student@edustream.io"} 
                   className="w-full bg-slate-50 border border-black/5 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all outline-none"
                 />
               </div>

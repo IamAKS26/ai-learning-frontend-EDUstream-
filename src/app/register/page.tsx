@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import apiClient from "@/lib/apiClient";
+import { GoogleLogin } from "@react-oauth/google";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -12,6 +14,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth(); // We need auth context if they use Google Login from here
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,12 +24,28 @@ export default function RegisterPage() {
     try {
       const response = await apiClient.post("/auth/register", { name, email, password });
       if (response.status === 201 || response.status === 200) {
-        // Assume register doesn't log them in automatically based on typical flows unless token returned.
-        // Prompt says "Registers account -> Logs in", meaning redirect to login.
         router.push("/login");
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "An error occurred during registration.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const response = await apiClient.post("/auth/google", { token: credentialResponse.credential });
+      if (response.data.token && response.data.user) {
+        login(response.data.token, response.data.user);
+        router.push("/dashboard");
+      } else {
+        setError("Invalid response from server.");
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Google login failed.");
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +62,7 @@ export default function RegisterPage() {
             <span className="material-symbols-outlined text-slate-900 text-3xl font-bold">person_add</span>
           </div>
           <h2 className="text-3xl font-black tracking-tight text-slate-900">Create Account</h2>
-          <p className="text-slate-500 font-medium text-sm mt-2">Join the <span className="text-slate-900 font-bold">LearnAI</span> experience</p>
+          <p className="text-slate-500 font-medium text-sm mt-2">Join the <span className="text-slate-900 font-bold">EduStream</span> experience</p>
         </div>
 
         {error && (
@@ -94,6 +113,23 @@ export default function RegisterPage() {
             {isLoading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
+
+        <div className="mt-6 flex items-center justify-center">
+          <div className="h-px bg-black/10 flex-1"></div>
+          <span className="px-4 text-xs font-medium text-slate-400 uppercase tracking-wider">or sign in with</span>
+          <div className="h-px bg-black/10 flex-1"></div>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError("Google Login Failed")}
+            useOneTap
+            shape="pill"
+            theme="outline"
+            size="large"
+          />
+        </div>
 
         <p className="mt-8 text-center text-sm text-slate-500 font-medium">
           Already have an account?{" "}
