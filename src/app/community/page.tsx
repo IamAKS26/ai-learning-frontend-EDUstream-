@@ -1,153 +1,406 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
+import Link from "next/link";
+import apiClient from "@/lib/apiClient";
+import { useAuth } from "@/context/AuthContext";
+
+interface Creator {
+  _id: string;
+  name: string;
+  bio?: string;
+  avatarColor?: string;
+}
+
+interface Course {
+  _id: string;
+  title: string;
+  description?: string;
+  level?: string;
+  category?: string;
+  rating: number;
+  ratingsCount: number;
+  views: number;
+  enrolledCount: number;
+  lessonsCount?: number;
+  tags?: string[];
+  createdBy?: Creator;
+  createdAt?: string;
+}
+
+interface TrendingData {
+  topCourses: Course[];
+  topCreators: { _id: string; name: string; xp: number; avatarColor?: string; bio?: string }[];
+}
+
+const LEVELS = ["All Levels", "Beginner", "Intermediate", "Advanced"];
+const SORTS: { label: string; value: string }[] = [
+  { label: "Newest", value: "newest" },
+  { label: "Most Popular", value: "popular" },
+  { label: "Top Rated", value: "top-rated" },
+  { label: "Most Enrolled", value: "enrolled" },
+];
+
+function StarDisplay({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
+  const sz = size === "lg" ? "text-lg" : "text-xs";
+  return (
+    <div className={`flex items-center gap-0.5 ${sz}`}>
+      {[1, 2, 3, 4, 5].map(s => (
+        <span key={s} className={s <= Math.round(rating) ? "text-amber-400" : "text-slate-200"}>★</span>
+      ))}
+    </div>
+  );
+}
+
+function AvatarBubble({ name, colorClass, size = 10 }: { name?: string; colorClass?: string; size?: number }) {
+  const initials = name ? name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() : "?";
+  return (
+    <div className={`w-${size} h-${size} rounded-full flex items-center justify-center font-bold text-sm ${colorClass || "bg-slate-200 text-slate-600"}`}>
+      {initials}
+    </div>
+  );
+}
+
+function CourseCard({ course, onRate }: { course: Course; onRate: (courseId: string, val: number) => void }) {
+  const [hoverStar, setHoverStar] = useState(0);
+  const [enrolling, setEnrolling] = useState(false);
+  const [enrolled, setEnrolled] = useState(false);
+  const { user } = useAuth();
+
+  const handleEnroll = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user || enrolling || enrolled) return;
+    setEnrolling(true);
+    try {
+      await apiClient.post(`/community/enroll/${course._id}`);
+      setEnrolled(true);
+    } catch { } finally {
+      setEnrolling(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-black/5 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden group">
+      {/* Header color band */}
+      <div className="h-2 bg-gradient-to-r from-primary/70 to-primary/30" />
+
+      <div className="p-5 flex flex-col flex-1 gap-3">
+        {/* Level + Category badges */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {course.level && (
+            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+              course.level === "Beginner" ? "bg-emerald-50 text-emerald-600" :
+              course.level === "Intermediate" ? "bg-blue-50 text-blue-600" : "bg-purple-50 text-purple-600"
+            }`}>{course.level}</span>
+          )}
+          {course.category && (
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">{course.category}</span>
+          )}
+        </div>
+
+        {/* Title */}
+        <h3 className="font-bold text-slate-900 text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+          {course.title}
+        </h3>
+
+        {/* Description */}
+        {course.description && (
+          <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{course.description}</p>
+        )}
+
+        {/* Stats row */}
+        <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
+          <span className="flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px]">visibility</span>
+            {course.views.toLocaleString()} views
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px]">school</span>
+            {course.enrolledCount} enrolled
+          </span>
+          {course.lessonsCount ? (
+            <span className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">menu_book</span>
+              {course.lessonsCount} lessons
+            </span>
+          ) : null}
+        </div>
+
+        {/* Rating row */}
+        <div className="flex items-center gap-2">
+          <StarDisplay rating={course.rating} />
+          <span className="text-xs font-bold text-slate-700">{course.rating > 0 ? course.rating.toFixed(1) : "No ratings"}</span>
+          {course.ratingsCount > 0 && (
+            <span className="text-[10px] text-slate-400">({course.ratingsCount})</span>
+          )}
+        </div>
+
+        {/* Interactive star rater for logged-in users */}
+        {user && (
+          <div className="flex items-center gap-1 pt-1">
+            <span className="text-[10px] text-slate-400 mr-1">Rate:</span>
+            {[1, 2, 3, 4, 5].map(s => (
+              <button
+                key={s}
+                onMouseEnter={() => setHoverStar(s)}
+                onMouseLeave={() => setHoverStar(0)}
+                onClick={() => onRate(course._id, s)}
+                className={`text-base transition-colors ${s <= (hoverStar || 0) ? "text-amber-400" : "text-slate-200"}`}
+              >★</button>
+            ))}
+          </div>
+        )}
+
+        {/* Footer: author + actions */}
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-black/5">
+          {course.createdBy ? (
+            <Link
+              href={`/community/profile/${course.createdBy._id}`}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              onClick={e => e.stopPropagation()}
+            >
+              <AvatarBubble name={course.createdBy.name} colorClass={course.createdBy.avatarColor} size={7} />
+              <div>
+                <p className="text-xs font-bold text-slate-800 leading-none">{course.createdBy.name}</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">Course Creator</p>
+              </div>
+            </Link>
+          ) : <div />}
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleEnroll}
+              title={enrolled ? "Enrolled!" : "Enroll in course"}
+              className={`text-[10px] font-bold px-3 py-1.5 rounded-full transition-all ${
+                enrolled
+                  ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                  : "bg-primary/10 text-primary border border-primary/20 hover:bg-primary hover:text-slate-900"
+              }`}
+            >
+              {enrolling ? "..." : enrolled ? "✓ Enrolled" : "Enroll"}
+            </button>
+            <Link
+              href={`/module/${course._id}`}
+              onClick={async () => {
+                try { await apiClient.post(`/community/view/${course._id}`); } catch {}
+              }}
+              className="text-[10px] font-bold px-3 py-1.5 rounded-full bg-slate-900 text-white hover:bg-slate-700 transition-all"
+            >
+              Open →
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function CommunityPage() {
-  const trendingTopics = [
-    { name: "AI Ethics & Safety", posts: 124, color: "text-blue-500", bg: "bg-blue-50" },
-    { name: "Next.js 16 Patterns", posts: 89, color: "text-emerald-500", bg: "bg-emerald-50" },
-    { name: "Figma for Developers", posts: 56, color: "text-purple-500", bg: "bg-purple-50" },
-    { name: "Groq vs OpenAI Speed", posts: 42, color: "text-orange-500", bg: "bg-orange-50" }
-  ];
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [trending, setTrending] = useState<TrendingData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [level, setLevel] = useState("All Levels");
+  const [sort, setSort] = useState("newest");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { user } = useAuth();
 
-  const topContributors = [
-    { name: "Sarah Connor", xp: 12450, avatar: "SC", color: "bg-pink-100 text-pink-600" },
-    { name: "James Halliday", xp: 10200, avatar: "JH", color: "bg-blue-100 text-blue-600" },
-    { name: "Hiro Protagonist", xp: 9850, avatar: "HP", color: "bg-emerald-100 text-emerald-600" },
-    { name: "Molly Millions", xp: 8700, avatar: "MM", color: "bg-purple-100 text-purple-600" }
-  ];
+  const fetchFeed = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ sort, page: String(page) });
+      if (search) params.set("search", search);
+      if (level !== "All Levels") params.set("level", level);
 
-  const recentDiscussions = [
-    { 
-      title: "How to effectively prompt Llama 3.1 for code?", 
-      author: "Alex Rivera", 
-      replies: 12, 
-      time: "2h ago",
-      tags: ["AI", "Prompting"]
-    },
-    { 
-      title: "Share your study streak! I just hit 30 days.", 
-      author: "Jordan Lee", 
-      replies: 45, 
-      time: "5h ago",
-      tags: ["Motivation", "Success"]
-    },
-    { 
-      title: "Help with Tailwind 4 custom themes", 
-      author: "Sam Chen", 
-      replies: 8, 
-      time: "Yesterday",
-      tags: ["CSS", "Frontend"]
+      const res = await apiClient.get(`/community/feed?${params}`);
+      setCourses(res.data.courses || []);
+      setTotalPages(res.data.pages || 1);
+    } catch (err) {
+      console.error("Failed to fetch community feed", err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  }, [search, level, sort, page]);
+
+  const fetchTrending = useCallback(async () => {
+    try {
+      const res = await apiClient.get("/community/trending");
+      setTrending(res.data);
+    } catch {}
+  }, []);
+
+  useEffect(() => { fetchFeed(); }, [fetchFeed]);
+  useEffect(() => { fetchTrending(); }, [fetchTrending]);
+
+  const handleRate = async (courseId: string, value: number) => {
+    if (!user) return;
+    try {
+      await apiClient.post(`/community/rate/${courseId}`, { value });
+      fetchFeed(); // refresh to show updated rating
+    } catch {}
+  };
 
   return (
     <DashboardLayout>
-      <div className="p-8 max-w-6xl mx-auto space-y-8 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="p-4 md:p-8 space-y-6 max-w-none animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-black tracking-tight text-slate-900 mb-2">Community Lounge</h2>
-            <p className="text-slate-500 text-lg">Connect with fellow learners, share knowledge, and grow together.</p>
+            <h2 className="text-4xl font-black tracking-tight text-slate-900 mb-1">Explore Courses</h2>
+            <p className="text-slate-500">Discover courses published by fellow students. Learn from the community.</p>
           </div>
-          <button className="px-6 py-3 bg-slate-900 text-white font-bold rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg">
-            <span className="material-symbols-outlined text-lg">edit_square</span> Start Discussion
-          </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main Feed */}
-          <div className="lg:col-span-3 space-y-6">
-            <div className="flex items-center gap-4 mb-2 overflow-x-auto pb-2 no-scrollbar">
-              {["All Discussions", "Announcements", "Study Groups", "Career Advice", "Showcase"].map((tab, i) => (
-                <button key={tab} className={`px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${i === 0 ? 'bg-primary/20 text-primary border border-primary/20' : 'bg-white text-slate-500 border border-black/5 hover:bg-slate-50'}`}>
-                  {tab}
-                </button>
-              ))}
-            </div>
+        {/* Search + Filters */}
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 flex flex-col md:flex-row gap-4 md:items-center">
+          <div className="flex-1 relative">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+            <input
+              type="text"
+              placeholder="Search courses by title..."
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-black/5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {LEVELS.map(l => (
+              <button
+                key={l}
+                onClick={() => { setLevel(l); setPage(1); }}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
+                  level === l ? "bg-primary/10 text-primary border-primary/20" : "bg-white text-slate-500 border-black/5 hover:bg-slate-50"
+                }`}
+              >{l}</button>
+            ))}
+          </div>
+          <select
+            value={sort}
+            onChange={e => { setSort(e.target.value); setPage(1); }}
+            className="text-sm bg-slate-50 border border-black/5 rounded-xl px-3 py-2.5 text-slate-700 outline-none font-medium"
+          >
+            {SORTS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+          </select>
+        </div>
 
-            <div className="space-y-4">
-              {recentDiscussions.map((post, i) => (
-                <div key={i} className="glass-card p-6 rounded-2xl bg-white border border-black/5 shadow-sm hover:shadow-md transition-all group cursor-pointer">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex gap-2">
-                      {post.tags.map(tag => (
-                        <span key={tag} className="text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-slate-100 text-slate-500 rounded-md">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium">{post.time}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                       <div className="w-6 h-6 rounded-full bg-slate-200" />
-                       <span className="text-sm font-bold text-slate-600">{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-4 text-slate-400">
-                       <span className="flex items-center gap-1.5 text-xs font-bold">
-                         <span className="material-symbols-outlined text-lg">chat_bubble</span> {post.replies}
-                       </span>
-                       <span className="flex items-center gap-1.5 text-xs font-bold">
-                         <span className="material-symbols-outlined text-lg">thumb_up</span> Update
-                       </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Main grid + sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          {/* Feed */}
+          <div className="lg:col-span-8 space-y-4">
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[1,2,3,4].map(i => (
+                  <div key={i} className="bg-white rounded-2xl border border-black/5 h-72 animate-pulse" />
+                ))}
+              </div>
+            ) : courses.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-black/5 p-16 text-center shadow-sm">
+                <span className="material-symbols-outlined text-6xl text-slate-300 block mb-4">search_off</span>
+                <h3 className="text-xl font-bold text-slate-700 mb-2">No courses found</h3>
+                <p className="text-slate-400 text-sm">Try adjusting your search or filters</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {courses.map(course => (
+                  <CourseCard key={course._id} course={course} onRate={handleRate} />
+                ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-2">
+                <button
+                  disabled={page === 1}
+                  onClick={() => setPage(p => p - 1)}
+                  className="px-4 py-2 rounded-xl border border-black/5 text-sm font-bold text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-colors"
+                >
+                  ← Prev
+                </button>
+                <span className="text-sm text-slate-500 font-medium">Page {page} of {totalPages}</span>
+                <button
+                  disabled={page === totalPages}
+                  onClick={() => setPage(p => p + 1)}
+                  className="px-4 py-2 rounded-xl border border-black/5 text-sm font-bold text-slate-600 disabled:opacity-30 hover:bg-slate-50 transition-colors"
+                >
+                  Next →
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Trending section */}
-            <section className="glass-card p-6 rounded-2xl bg-white border border-black/5 shadow-sm">
-               <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-6 flex items-center gap-2">
-                 <span className="material-symbols-outlined text-primary">trending_up</span> Trending Topics
-               </h3>
-               <div className="space-y-4">
-                 {trendingTopics.map((topic, i) => (
-                   <div key={i} className="flex items-center justify-between group cursor-pointer">
-                     <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg ${topic.bg} ${topic.color} flex items-center justify-center font-bold text-xs`}>
-                          #{i+1}
-                        </div>
-                        <span className="text-sm font-bold text-slate-700 group-hover:text-slate-900 transition-colors">{topic.name}</span>
-                     </div>
-                     <span className="text-xs text-slate-400 font-medium">{topic.posts} posts</span>
-                   </div>
-                 ))}
-               </div>
+          <div className="lg:col-span-4 space-y-6">
+
+            {/* Trending Courses */}
+            <section className="bg-white rounded-2xl border border-black/5 shadow-sm p-5">
+              <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-5 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">trending_up</span> Trending
+              </h3>
+              {trending?.topCourses.length ? (
+                <div className="space-y-4">
+                  {trending.topCourses.map((c, i) => (
+                    <Link
+                      href={`/module/${c._id}`}
+                      key={c._id}
+                      className="flex items-center gap-3 group"
+                      onClick={async () => { try { await apiClient.post(`/community/view/${c._id}`); } catch {} }}
+                    >
+                      <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 ${
+                        i === 0 ? "bg-amber-100 text-amber-600" : "bg-slate-100 text-slate-500"
+                      }`}>{i + 1}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-800 truncate group-hover:text-primary transition-colors">{c.title}</p>
+                        <p className="text-[10px] text-slate-400 font-medium">{c.views} views · ⭐ {c.rating > 0 ? c.rating.toFixed(1) : "–"}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 text-center py-4">No data yet</p>
+              )}
             </section>
 
-            {/* Top Contributors */}
-            <section className="glass-card p-6 rounded-2xl bg-white border border-black/5 shadow-sm">
-               <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-6 flex items-center gap-2">
-                 <span className="material-symbols-outlined text-accent">leaderboard</span> Leaderboard
-               </h3>
-               <div className="space-y-5">
-                 {topContributors.map((user, i) => (
-                   <div key={i} className="flex items-center justify-between">
-                     <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-full ${user.color} flex items-center justify-center font-black text-xs shadow-sm`}>
-                          {user.avatar}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-slate-900 leading-tight">{user.name}</p>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">{user.xp} XP Earned</p>
-                        </div>
-                     </div>
-                     <div className={`text-xs font-black ${i === 0 ? 'text-primary' : 'text-slate-300'}`}>
-                        {i === 0 ? '🏆' : `#${i+1}`}
-                     </div>
-                   </div>
-                 ))}
-               </div>
-               <button className="w-full mt-6 py-3 border border-black/5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50 transition-all uppercase tracking-widest">
-                 View Full Rankings
-               </button>
+            {/* Top Creators */}
+            <section className="bg-white rounded-2xl border border-black/5 shadow-sm p-5">
+              <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-5 flex items-center gap-2">
+                <span className="material-symbols-outlined text-amber-500">leaderboard</span> Top Creators
+              </h3>
+              {trending?.topCreators.length ? (
+                <div className="space-y-4">
+                  {trending.topCreators.map((creator, i) => (
+                    <Link href={`/community/profile/${creator._id}`} key={creator._id} className="flex items-center gap-3 group">
+                      <AvatarBubble name={creator.name} colorClass={creator.avatarColor} size={9} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-800 truncate group-hover:text-primary transition-colors">{creator.name}</p>
+                        <p className="text-[10px] text-slate-400 font-medium">{creator.xp.toLocaleString()} XP</p>
+                      </div>
+                      <span className={`text-sm ${i === 0 ? "text-primary" : "text-slate-300"}`}>{i === 0 ? "🏆" : `#${i + 1}`}</span>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 text-center py-4">No data yet</p>
+              )}
             </section>
+
+            {/* Quick tips */}
+            <section className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/10 p-5">
+              <h3 className="text-sm font-black text-slate-900 mb-3 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-base">lightbulb</span> How it works
+              </h3>
+              <ul className="space-y-2 text-xs text-slate-600 font-medium">
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">→</span> Browse & enroll in any published course</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">→</span> Rate courses after studying them (1–5 stars)</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">→</span> Click creator names to view their profile</li>
+                <li className="flex items-start gap-2"><span className="text-primary mt-0.5">→</span> Publish your own AI course via My Courses</li>
+              </ul>
+            </section>
+
           </div>
         </div>
       </div>

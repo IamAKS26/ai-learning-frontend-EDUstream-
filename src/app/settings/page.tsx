@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { useAuth } from "@/context/AuthContext";
+import { SkeletonBar, SkeletonBlock } from "@/components/Skeleton";
 
 export default function SettingsPage() {
   const { user } = useAuth();
+  const [initializing, setInitializing] = useState(true);
   
   const [notifications, setNotifications] = useState({
     emailDigests: true,
@@ -17,6 +19,56 @@ export default function SettingsPage() {
     theme: "light",
     aiVoice: "neutral"
   });
+
+  useEffect(() => {
+    const t = setTimeout(() => setInitializing(false), 800);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (initializing) {
+    return (
+      <DashboardLayout>
+        <div className="p-8 max-w-3xl mx-auto space-y-6 animate-pulse">
+          <div className="space-y-2">
+            <SkeletonBar className="h-8 w-36" />
+            <SkeletonBar className="h-4 w-72" />
+          </div>
+          {/* Profile section */}
+          <div className="bg-white rounded-2xl p-8 border border-black/5 shadow-sm space-y-6">
+            <SkeletonBar className="h-6 w-40" />
+            <div className="flex items-center gap-6">
+              <SkeletonBlock className="w-20 h-20 rounded-full" />
+              <SkeletonBar className="h-9 w-32 rounded-xl" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <SkeletonBar className="h-3 w-20" />
+                <SkeletonBar className="h-11 w-full rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <SkeletonBar className="h-3 w-28" />
+                <SkeletonBar className="h-11 w-full rounded-xl" />
+              </div>
+            </div>
+            <SkeletonBar className="h-11 w-36 rounded-xl" />
+          </div>
+          {/* Notifications section */}
+          <div className="bg-white rounded-2xl p-8 border border-black/5 shadow-sm space-y-6">
+            <SkeletonBar className="h-6 w-32" />
+            {[1,2,3].map(i => (
+              <div key={i} className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <SkeletonBar className="h-4 w-40" />
+                  <SkeletonBar className="h-3 w-64" />
+                </div>
+                <SkeletonBlock className="w-11 h-6 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

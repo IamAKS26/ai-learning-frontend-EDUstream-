@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { DashboardLayout } from "@/components/DashboardLayout";
 
 interface Note {
   _id: string;
@@ -77,25 +78,51 @@ export default function NotesPage() {
   // Group by moduleId
   const grouped: Record<string, Note[]> = {};
   notes.forEach(note => {
-    const key = String(note.moduleId);
+    const key = String(note.moduleId || "global");
     if (!grouped[key]) grouped[key] = [];
     grouped[key].push(note);
   });
 
+  const handleCreateNote = () => {
+    const newNote: Note = {
+      _id: Date.now().toString(),
+      content: "",
+      moduleId: "global",
+      updatedAt: new Date().toISOString()
+    };
+    
+    const newNotesList = [newNote, ...notes];
+    setNotes(newNotesList);
+    setEditingId(newNote._id);
+    setDraftContent("");
+
+    try {
+      localStorage.setItem("edustream-notes", JSON.stringify(newNotesList));
+    } catch(e) { console.error(e); }
+  };
+
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(255,179,0,0.1)]">
-            <span className="material-symbols-outlined text-primary text-2xl">sd_storage</span>
+    <DashboardLayout>
+      <div className="p-4 md:p-8 max-w-4xl mx-auto w-full">
+        {/* Header */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(255,179,0,0.1)]">
+              <span className="material-symbols-outlined text-primary text-2xl">sd_storage</span>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold font-display tracking-tight text-slate-900 mb-1">Local Device Notes</h1>
+              <p className="text-sm text-slate-500">{notes.length} note{notes.length !== 1 ? "s" : ""} saved privately on this browser</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-bold font-display tracking-tight text-slate-900 mb-1">Local Device Notes</h1>
-            <p className="text-sm text-slate-500">{notes.length} note{notes.length !== 1 ? "s" : ""} saved privately on this browser</p>
-          </div>
+          <button 
+            onClick={handleCreateNote} 
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-slate-900 font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[20px]">add</span>
+            Create Note
+          </button>
         </div>
-      </div>
 
       {loading && (
         <div className="text-center py-20 text-slate-500 flex flex-col items-center">
@@ -117,9 +144,11 @@ export default function NotesPage() {
         {Object.entries(grouped).map(([moduleId, moduleNotes]) => (
           <div key={moduleId} className="animate-in slide-in-from-bottom-4 fade-in">
             <div className="flex items-center gap-3 mb-4 pl-1">
-              <span className="material-symbols-outlined text-primary text-lg">folder_special</span>
+              <span className="material-symbols-outlined text-primary text-lg">{moduleId === "global" ? "public" : "folder_special"}</span>
               <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                Module <span className="text-slate-500 font-mono lowercase tracking-normal bg-slate-50 py-1 px-2 rounded-md ml-2 border border-black/5">{moduleId.slice(-8)}</span>
+                {moduleId === "global" ? "General Notes" : (
+                   <>Module <span className="text-slate-500 font-mono lowercase tracking-normal bg-slate-50 py-1 px-2 rounded-md ml-2 border border-black/5">{moduleId.slice(-8)}</span></>
+                )}
               </h2>
             </div>
             
@@ -180,6 +209,7 @@ export default function NotesPage() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

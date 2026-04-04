@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import Link from "next/link";
 import apiClient from "@/lib/apiClient";
+import { SkeletonCourseCard } from "@/components/Skeleton";
 
 interface Course {
   _id: string;
@@ -191,11 +192,10 @@ export default function ModuleCatalogPage() {
           </div>
         )}
 
-        {/* States */}
+        {/* Skeleton loading */}
         {loading && (
-          <div className="flex items-center gap-3 text-slate-400 py-12 justify-center">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="font-medium text-slate-500">Loading courses...</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map(i => <SkeletonCourseCard key={i} />)}
           </div>
         )}
 

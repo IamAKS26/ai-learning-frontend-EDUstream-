@@ -1,9 +1,52 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
+import { SkeletonBar, SkeletonBlock, SkeletonProgressRow } from "@/components/Skeleton";
 
 export default function ProgressPage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate data fetch delay
+    const t = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="p-8 max-w-5xl mx-auto space-y-8 animate-pulse">
+          <div className="space-y-2">
+            <SkeletonBar className="h-8 w-48" />
+            <SkeletonBar className="h-4 w-80" />
+          </div>
+          {/* Overview Card */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 bg-white rounded-2xl p-8 border border-black/5 shadow-sm flex items-center gap-6">
+              <SkeletonBlock className="w-32 h-32 rounded-full flex-shrink-0" />
+              <div className="flex-1 space-y-3">
+                <SkeletonBar className="h-6 w-48" />
+                <SkeletonBar className="h-4 w-full" />
+                <SkeletonBar className="h-4 w-3/4" />
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 border border-black/5 shadow-sm space-y-4 flex flex-col items-center justify-center">
+              <SkeletonBlock className="w-16 h-16 rounded-full" />
+              <SkeletonBar className="h-5 w-20" />
+              <SkeletonBar className="h-3 w-32" />
+            </div>
+          </div>
+          {/* Module rows */}
+          <div className="space-y-4">
+            <SkeletonBar className="h-6 w-36" />
+            <SkeletonProgressRow />
+            <SkeletonProgressRow />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
   return (
     <DashboardLayout>
       <div className="p-8 max-w-5xl mx-auto space-y-8">
