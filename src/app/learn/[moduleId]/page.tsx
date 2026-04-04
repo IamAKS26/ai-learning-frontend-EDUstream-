@@ -116,7 +116,7 @@ export default function LearnPage() {
             <div className="glass-card p-6 rounded-2xl border-red-500/30 text-center space-y-4 m-auto w-full max-w-lg">
               <span className="material-symbols-outlined text-4xl text-red-500 block">error</span>
               <p className="text-red-400">{error}</p>
-              <button onClick={fetchNextUnit} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm text-white transition-colors">
+              <button onClick={() => fetchNextUnit(moduleTopic)} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm text-white transition-colors">
                 Retry
               </button>
             </div>
