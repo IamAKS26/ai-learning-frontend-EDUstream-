@@ -66,13 +66,13 @@ export default function UnitPage() {
 
     switch (unit.type) {
       case "read":
-        return <LessonViewer unit={unit} onComplete={handleComplete} />;
+        return <LessonViewer unit={unit} moduleId={unit.moduleId} onComplete={handleComplete} />;
       case "quiz":
-        return <QuizViewer unit={unit} onComplete={handleComplete} />;
+        return <QuizViewer unit={unit} moduleId={unit.moduleId} onComplete={handleComplete} />;
       case "video":
-        return <VideoViewer unit={unit} onComplete={handleComplete} />;
+        return <VideoViewer unit={unit} moduleId={unit.moduleId} onComplete={handleComplete} />;
       case "task":
-        return <TaskViewer unit={unit} onComplete={handleComplete} />;
+        return <TaskViewer unit={unit} moduleId={unit.moduleId} onComplete={handleComplete} />;
       default:
         return <div className="text-red-500">Unknown unit type: {unit.type}</div>;
     }
